@@ -1,2 +1,2 @@
-# auth
-authorization service
+# protos
+contracts for microservices
