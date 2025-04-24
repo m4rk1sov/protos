@@ -7,12 +7,15 @@ option go_package = "m4rk1sov.sso.v1;ssov1";
 service Auth {
   rpc Register (RegisterRequest) returns (RegisterResponse);
   rpc Login (LoginRequest) returns (LoginResponse);
-  rpc IsAdmin (IsAdminRequest) returns (IsAdminResponse);
+  rpc Logout (LogoutRequest) returns (LogoutResponse);
+  rpc GetUserInfo (GetUserInfoRequest) returns (GetUserInfoResponse);
+  rpc RefreshToken (RefreshTokenRequest) returns (RefreshTokenResponse);
 }
 
-//service Permission {
-//  GetUserPermissions(GetUserPermissionsRequest) return
-//}
+service Permission {
+  rpc GetUserPermissions(GetUserPermissionsRequest) returns (GetUserPermissionsResponse);
+  rpc HasPermission(HasUserPermissionRequest) returns (HasUserPermissionResponse);
+}
 
 message RegisterRequest {
   string email = 1;
@@ -30,13 +33,52 @@ message LoginRequest {
 }
 
 message LoginResponse {
-  string token = 1;
+  string access_token = 1;
+  string refresh_token = 2;
+  int64 expires_at_unix = 3;
 }
 
-message IsAdminRequest {
+message LogoutRequest {
+  string access_token = 1;
+}
+
+message LogoutResponse {
+  bool success = 1;
+}
+
+message GetUserInfoRequest {
+  string access_token = 1;
+}
+
+message GetUserInfoResponse {
+  int64 user_id = 1;
+  string email = 2;
+  string role = 3;
+}
+
+message RefreshTokenRequest {
+  string refresh_token = 1;
+}
+
+message RefreshTokenResponse {
+  string access_token = 1;
+  string refresh_token = 2;
+  int64 expires_at_unix = 3;
+}
+
+message GetUserPermissionsRequest {
   int64 user_id = 1;
 }
 
-message IsAdminResponse {
-  bool is_admin = 1;
+message GetUserPermissionsResponse {
+  repeated string permissions = 1; // ["read:user", "write:settings"]
+}
+
+message HasUserPermissionRequest {
+  int64 user_id = 1;
+  string permission = 2;
+}
+
+message HasUserPermissionResponse {
+  bool allowed = 1;
 }
