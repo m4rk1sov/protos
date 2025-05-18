@@ -14,7 +14,7 @@ service Auth {
 
 service Permission {
   rpc GetUserPermissions(GetUserPermissionsRequest) returns (GetUserPermissionsResponse);
-  rpc HasPermission(HasUserPermissionRequest) returns (HasUserPermissionResponse);
+  rpc HasUserPermission(HasUserPermissionRequest) returns (HasUserPermissionResponse);
 }
 
 message RegisterRequest {

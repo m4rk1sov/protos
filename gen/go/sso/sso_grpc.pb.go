@@ -274,7 +274,7 @@ var Auth_ServiceDesc = grpc.ServiceDesc{
 
 const (
 	Permission_GetUserPermissions_FullMethodName = "/auth.Permission/GetUserPermissions"
-	Permission_HasPermission_FullMethodName      = "/auth.Permission/HasPermission"
+	Permission_HasUserPermission_FullMethodName  = "/auth.Permission/HasUserPermission"
 )
 
 // PermissionClient is the client API for Permission service.
@@ -282,7 +282,7 @@ const (
 // For semantics around ctx use and closing/ending streaming RPCs, please refer to https://pkg.go.dev/google.golang.org/grpc/?tab=doc#ClientConn.NewStream.
 type PermissionClient interface {
 	GetUserPermissions(ctx context.Context, in *GetUserPermissionsRequest, opts ...grpc.CallOption) (*GetUserPermissionsResponse, error)
-	HasPermission(ctx context.Context, in *HasUserPermissionRequest, opts ...grpc.CallOption) (*HasUserPermissionResponse, error)
+	HasUserPermission(ctx context.Context, in *HasUserPermissionRequest, opts ...grpc.CallOption) (*HasUserPermissionResponse, error)
 }
 
 type permissionClient struct {
@@ -303,10 +303,10 @@ func (c *permissionClient) GetUserPermissions(ctx context.Context, in *GetUserPe
 	return out, nil
 }
 
-func (c *permissionClient) HasPermission(ctx context.Context, in *HasUserPermissionRequest, opts ...grpc.CallOption) (*HasUserPermissionResponse, error) {
+func (c *permissionClient) HasUserPermission(ctx context.Context, in *HasUserPermissionRequest, opts ...grpc.CallOption) (*HasUserPermissionResponse, error) {
 	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
 	out := new(HasUserPermissionResponse)
-	err := c.cc.Invoke(ctx, Permission_HasPermission_FullMethodName, in, out, cOpts...)
+	err := c.cc.Invoke(ctx, Permission_HasUserPermission_FullMethodName, in, out, cOpts...)
 	if err != nil {
 		return nil, err
 	}
@@ -318,7 +318,7 @@ func (c *permissionClient) HasPermission(ctx context.Context, in *HasUserPermiss
 // for forward compatibility.
 type PermissionServer interface {
 	GetUserPermissions(context.Context, *GetUserPermissionsRequest) (*GetUserPermissionsResponse, error)
-	HasPermission(context.Context, *HasUserPermissionRequest) (*HasUserPermissionResponse, error)
+	HasUserPermission(context.Context, *HasUserPermissionRequest) (*HasUserPermissionResponse, error)
 	mustEmbedUnimplementedPermissionServer()
 }
 
@@ -332,8 +332,8 @@ type UnimplementedPermissionServer struct{}
 func (UnimplementedPermissionServer) GetUserPermissions(context.Context, *GetUserPermissionsRequest) (*GetUserPermissionsResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method GetUserPermissions not implemented")
 }
-func (UnimplementedPermissionServer) HasPermission(context.Context, *HasUserPermissionRequest) (*HasUserPermissionResponse, error) {
-	return nil, status.Errorf(codes.Unimplemented, "method HasPermission not implemented")
+func (UnimplementedPermissionServer) HasUserPermission(context.Context, *HasUserPermissionRequest) (*HasUserPermissionResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method HasUserPermission not implemented")
 }
 func (UnimplementedPermissionServer) mustEmbedUnimplementedPermissionServer() {}
 func (UnimplementedPermissionServer) testEmbeddedByValue()                    {}
@@ -374,20 +374,20 @@ func _Permission_GetUserPermissions_Handler(srv interface{}, ctx context.Context
 	return interceptor(ctx, in, info, handler)
 }
 
-func _Permission_HasPermission_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+func _Permission_HasUserPermission_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
 	in := new(HasUserPermissionRequest)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
 	if interceptor == nil {
-		return srv.(PermissionServer).HasPermission(ctx, in)
+		return srv.(PermissionServer).HasUserPermission(ctx, in)
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: Permission_HasPermission_FullMethodName,
+		FullMethod: Permission_HasUserPermission_FullMethodName,
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(PermissionServer).HasPermission(ctx, req.(*HasUserPermissionRequest))
+		return srv.(PermissionServer).HasUserPermission(ctx, req.(*HasUserPermissionRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
@@ -404,8 +404,8 @@ var Permission_ServiceDesc = grpc.ServiceDesc{
 			Handler:    _Permission_GetUserPermissions_Handler,
 		},
 		{
-			MethodName: "HasPermission",
-			Handler:    _Permission_HasPermission_Handler,
+			MethodName: "HasUserPermission",
+			Handler:    _Permission_HasUserPermission_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},
