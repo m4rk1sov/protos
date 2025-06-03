@@ -1,0 +1,125 @@
+syntax = "proto3";
+
+package profile;
+
+import "google/protobuf/empty.proto";
+import "google/api/annotations.proto";
+import "protoc-gen-openapiv2/options/annotations.proto";
+
+option go_package = "m4rk1sov.profile.v1;profilev1";
+option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_swagger) = {
+  info: {
+    title: "Profile Service API";
+    version: "1.0";
+    description: "Handles user profile: creation, retrieving, updating, deleting and listing profiles";
+  };
+  schemes: HTTP;
+  consumes: "application/json";
+  produces: "application/json";
+};
+
+service ProfileService {
+  rpc CreateProfile (CreateProfileRequest) returns (ProfileResponse) {
+    option (google.api.http) = {
+      post: "/v1/profiles"
+      body: "*"
+    };
+    option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+      tags: ["Profile"];
+    };
+  }
+  rpc GetProfile (GetProfileRequest) returns (ProfileResponse) {
+    option (google.api.http) = {
+      get: "/v1/profiles/{id}"
+    };
+    option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+      tags: ["Profile"];
+    };
+  }
+  rpc GetProfileByUserID (GetProfileByUserIDRequest) returns (ProfileResponse) {
+    option (google.api.http) = {
+      get: "/v1/profiles/by-user/{user_id}"
+    };
+    option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+      tags: ["Profile"];
+    };
+  }
+  rpc UpdateProfile (UpdateProfileRequest) returns (ProfileResponse) {
+    option (google.api.http) = {
+      patch: "/v1/profiles/{id}"
+      body: "*"
+    };
+    option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+      tags: ["Profile"];
+    };
+  }
+  rpc DeleteProfile (DeleteProfileRequest) returns (google.protobuf.Empty) {
+    option (google.api.http) = {
+      delete: "/v1/profiles/{id}"
+    };
+    option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+      tags: ["Profile"];
+    };
+  }
+  rpc ListProfiles (ListProfilesRequest) returns (ListProfilesResponse) {
+    option (google.api.http) = {
+      get: "/v1/profiles"
+    };
+    option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+      tags: ["Profile"];
+    };
+  }
+}
+
+message UserProfile {
+  // UUIDs for ID fields?
+  string id = 1;
+  int64 user_id = 2;
+  string name = 3;
+  string phone = 4;
+  string address = 5;
+  string email = 6;
+}
+
+message CreateProfileRequest {
+  int64 user_id = 1;
+  string name = 2;
+  string phone = 3;
+  string address = 4;
+  string email = 5;
+}
+
+message GetProfileRequest {
+  string id = 1;
+}
+
+message GetProfileByUserIDRequest {
+  int64 user_id = 1;
+}
+
+message UpdateProfileRequest {
+  string id = 1;
+  optional string name = 2;
+  optional string phone = 3;
+  optional string address = 4;
+}
+
+// Is it needed?
+message DeleteProfileRequest {
+  string id = 1;
+}
+
+message ListProfilesRequest {
+  int32 page = 1;
+  int32 limit = 2;
+}
+
+message ProfileResponse {
+  UserProfile profile = 1;
+}
+
+message ListProfilesResponse {
+  repeated UserProfile profiles = 1;
+  // is int32 enough?
+  int32 total = 2;
+}

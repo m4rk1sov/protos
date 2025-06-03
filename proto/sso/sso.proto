@@ -2,28 +2,161 @@ syntax = "proto3";
 
 package auth;
 
+import "google/protobuf/empty.proto";
+import "google/api/annotations.proto";
+import "protoc-gen-openapiv2/options/annotations.proto";
+
 option go_package = "m4rk1sov.sso.v1;ssov1";
+option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_swagger) = {
+  info: {
+    title: "SSO Service API";
+    version: "1.0";
+    description: "Handles login, register, tokens, permissions";
+  };
+  schemes: HTTP;
+  consumes: "application/json";
+  produces: "application/json";
+};
 
 service Auth {
-  rpc Register (RegisterRequest) returns (RegisterResponse);
-  rpc Login (LoginRequest) returns (LoginResponse);
-  rpc Logout (LogoutRequest) returns (LogoutResponse);
-  rpc GetUserInfo (GetUserInfoRequest) returns (GetUserInfoResponse);
-  rpc RefreshToken (RefreshTokenRequest) returns (RefreshTokenResponse);
+  rpc Register (RegisterRequest) returns (RegisterResponse) {
+    option (google.api.http) = {
+      post: "/v1/auth/register"
+      body: "*"
+    };
+    option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+      tags: ["Auth"];
+      summary: "Register user"
+      description: "Register user based on general information (name, phone, address, email and password), returns user_id, name and email"
+    };
+  }
+  rpc Login (LoginRequest) returns (LoginResponse) {
+    option (google.api.http) = {
+      post: "/v1/auth/login"
+      body: "*"
+    };
+    option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+      tags: ["Auth"];
+      summary: "Login user"
+      description: "Login user, by email and password, provide the app_id for for permission check further, returns access and refresh tokens with expire time"
+    };
+  }
+  rpc Logout (LogoutRequest) returns (LogoutResponse) {
+    option (google.api.http) = {
+      post: "/v1/auth/logout"
+      body: "*"
+    };
+    option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+      tags: ["Auth"];
+      summary: "Logout user"
+      description: "Logout user by refresh token, deletes the token in DB"
+    };
+  }
+  rpc GetUserInfo (GetUserInfoRequest) returns (GetUserInfoResponse) {
+    option (google.api.http) = {
+      get: "/v1/auth/user"
+    };
+    option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+      tags: ["Auth"];
+      summary: "Get user info"
+      description: "Get user info: user_id, name, phone, email, address. Based on the access token"
+    };
+  }
+  rpc RefreshToken (RefreshTokenRequest) returns (RefreshTokenResponse) {
+    option (google.api.http) = {
+      post: "/v1/auth/refresh"
+      body: "*"
+    };
+    option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+      tags: ["Auth"];
+      summary: "Refresh the tokens"
+      description: "Return new access and refresh tokens with expire time by the refresh token"
+    };
+  }
+
+  rpc ForgotPassword (ForgotPasswordRequest) returns (google.protobuf.Empty) {
+    option (google.api.http) = {
+      post: "/v1/auth/forgot-password"
+      body: "*"
+    };
+    option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+      tags: ["Auth"];
+      summary: "Forgot password request"
+      description: "By providing the email and app_id will return token for resetting password"
+    };
+  }
+  rpc ResetPassword (ResetPasswordRequest) returns (google.protobuf.Empty) {
+    option (google.api.http) = {
+      post: "/v1/auth/reset-password"
+      body: "*"
+    };
+    option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+      tags: ["Auth"];
+      summary: "Reset password"
+      description: "By the token received when forgot password was requested, will refresh password"
+    };
+  }
+
+  rpc SendEmailVerification (SendEmailVerificationRequest) returns (google.protobuf.Empty) {
+    option (google.api.http) = {
+      post: "/v1/auth/verification/send"
+      body: "*"
+    };
+    option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+      tags: ["Auth"];
+      summary: "Email verification will be send"
+      description: "Email verification request sent after the registration, contains token"
+    };
+  }
+  rpc EmailVerify (EmailVerifyRequest) returns (google.protobuf.Empty) {
+    option (google.api.http) = {
+      post: "/v1/auth/verification/confirm"
+      body: "*"
+    };
+    option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+      tags: ["Auth"];
+      summary: "Email verification confirmation"
+      description: "Email will be verified after the token is confirmed"
+    };
+  }
 }
 
 service Permission {
-  rpc GetUserPermissions(GetUserPermissionsRequest) returns (GetUserPermissionsResponse);
-  rpc HasUserPermission(HasUserPermissionRequest) returns (HasUserPermissionResponse);
+  rpc GetUserPermissions(GetUserPermissionsRequest) returns (GetUserPermissionsResponse) {
+    option (google.api.http) = {
+      get: "/v1/permissions/{user_id}"
+    };
+    option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+      tags: ["Permission"];
+      summary: "Get user permissions"
+      description: "Get user permissions by the user_id, returns array"
+    };
+  }
+  rpc HasUserPermission(HasUserPermissionRequest) returns (HasUserPermissionResponse) {
+    option (google.api.http) = {
+      get: "/v1/permissions/{user_id}/{permission}"
+    };
+    option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+      tags: ["Permission"];
+      summary: "Check for user permission"
+      description: "Check for whether user has permission or not by the user_id and permission, returns bool"
+    };
+  }
 }
 
 message RegisterRequest {
-  string email = 1;
-  string password = 2;
+  string name = 1;
+  string phone = 2;
+  string address = 3;
+
+  string email = 4;
+  string password = 5;
 }
 
 message RegisterResponse {
   int64 user_id = 1;
+  string name = 2;
+  string email = 3;
 }
 
 message LoginRequest {
@@ -53,6 +186,9 @@ message GetUserInfoRequest {
 message GetUserInfoResponse {
   int64 user_id = 1;
   string email = 2;
+  string name = 3;
+  string phone = 4;
+  string address = 5;
 }
 
 message RefreshTokenRequest {
@@ -64,6 +200,27 @@ message RefreshTokenResponse {
   string refresh_token = 2;
   int64 expires_at_unix = 3;
 }
+
+message ForgotPasswordRequest {
+  string email = 1;
+  int32 app_id = 2;
+}
+
+message ResetPasswordRequest {
+  string token = 1;
+  string new_password = 2;
+}
+
+message SendEmailVerificationRequest {
+  int64 user_id = 1;
+  int32 app_id = 2;
+}
+
+message EmailVerifyRequest {
+  string token = 1;
+}
+
+//message Empty {}
 
 message GetUserPermissionsRequest {
   int64 user_id = 1;
