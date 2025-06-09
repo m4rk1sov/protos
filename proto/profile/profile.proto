@@ -2,7 +2,6 @@ syntax = "proto3";
 
 package profile;
 
-import "google/protobuf/empty.proto";
 import "google/api/annotations.proto";
 import "protoc-gen-openapiv2/options/annotations.proto";
 
@@ -26,6 +25,8 @@ service ProfileService {
     };
     option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
       tags: ["Profile"];
+      summary: "Create user profile"
+      description: "Creates user profile by the data input automatically"
     };
   }
   rpc GetProfile (GetProfileRequest) returns (ProfileResponse) {
@@ -34,6 +35,8 @@ service ProfileService {
     };
     option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
       tags: ["Profile"];
+      summary: "Get user profile by id (profile)"
+      description: "Get user profile by profile id (string UUID) (important to not mix with user_id from auth)"
     };
   }
   rpc GetProfileByUserID (GetProfileByUserIDRequest) returns (ProfileResponse) {
@@ -41,7 +44,9 @@ service ProfileService {
       get: "/v1/profiles/by-user/{user_id}"
     };
     option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
-      tags: ["Profile"];
+      tags: ["Profile", "Auth"];
+      summary: "Get user profile by user_id (auth)"
+      description: "Get user profile by user_id from auth service (int64)"
     };
   }
   rpc UpdateProfile (UpdateProfileRequest) returns (ProfileResponse) {
@@ -50,15 +55,30 @@ service ProfileService {
       body: "*"
     };
     option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
-      tags: ["Profile"];
+      tags: ["Profile", "Auth"];
+      summary: "Update user profile PATCH"
+      description: "Update user profile partially or fully depending on request"
     };
   }
-  rpc DeleteProfile (DeleteProfileRequest) returns (google.protobuf.Empty) {
+  rpc DeleteProfile (DeleteProfileRequest) returns (DeleteProfileResponse) {
     option (google.api.http) = {
       delete: "/v1/profiles/{id}"
     };
     option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
       tags: ["Profile"];
+      summary: "Delete user profile"
+      description: "Delete user profile by UUID profile id string "
+    };
+  }
+  rpc UpdatePassword (UpdatePasswordRequest) returns (UpdatePasswordResponse) {
+    option (google.api.http) = {
+      patch: "/v1/profiles"
+      body: "*"
+    };
+    option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+      tags: ["Profile", "Auth"];
+      summary: "Update user password"
+      description: "Update user password by providing old and new passwords"
     };
   }
   rpc ListProfiles (ListProfilesRequest) returns (ListProfilesResponse) {
@@ -67,6 +87,8 @@ service ProfileService {
     };
     option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
       tags: ["Profile"];
+      summary: "List profiles (for admins)"
+      description: "List profiles by limiting and pagination"
     };
   }
 }
@@ -102,16 +124,34 @@ message UpdateProfileRequest {
   optional string name = 2;
   optional string phone = 3;
   optional string address = 4;
+  string token = 5; // authentication
 }
 
-// Is it needed?
 message DeleteProfileRequest {
   string id = 1;
 }
 
+message DeleteProfileResponse {
+  bool success = 1;
+  string message = 2;
+}
+
+message UpdatePasswordRequest {
+  string token = 1; // authentication
+  string old_password = 2;
+  string new_password = 3;
+}
+
+message UpdatePasswordResponse {
+  bool success = 1;
+  string message = 2;
+}
+
 message ListProfilesRequest {
-  int32 page = 1;
-  int32 limit = 2;
+  int64 page = 1;
+  int64 limit = 2;
+  string sort_by = 3;
+  string sort_order = 4; // ASC OR DESC
 }
 
 message ProfileResponse {
@@ -121,5 +161,8 @@ message ProfileResponse {
 message ListProfilesResponse {
   repeated UserProfile profiles = 1;
   // is int32 enough?
-  int32 total = 2;
+  int64 total = 2;
+  int64 page = 3;
+  int64 limit = 4;
+  bool has_next = 5;
 }

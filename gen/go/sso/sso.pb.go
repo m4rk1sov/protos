@@ -11,7 +11,6 @@ import (
 	_ "google.golang.org/genproto/googleapis/api/annotations"
 	protoreflect "google.golang.org/protobuf/reflect/protoreflect"
 	protoimpl "google.golang.org/protobuf/runtime/protoimpl"
-	emptypb "google.golang.org/protobuf/types/known/emptypb"
 	reflect "reflect"
 	sync "sync"
 	unsafe "unsafe"
@@ -976,11 +975,243 @@ func (x *HasUserPermissionResponse) GetAllowed() bool {
 	return false
 }
 
+type ForgotPasswordResponse struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	Success       bool                   `protobuf:"varint,1,opt,name=success,proto3" json:"success,omitempty"`
+	Message       string                 `protobuf:"bytes,2,opt,name=message,proto3" json:"message,omitempty"`
+	ExpiresAtUnix int64                  `protobuf:"varint,3,opt,name=expires_at_unix,json=expiresAtUnix,proto3" json:"expires_at_unix,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *ForgotPasswordResponse) Reset() {
+	*x = ForgotPasswordResponse{}
+	mi := &file_sso_sso_proto_msgTypes[18]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *ForgotPasswordResponse) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*ForgotPasswordResponse) ProtoMessage() {}
+
+func (x *ForgotPasswordResponse) ProtoReflect() protoreflect.Message {
+	mi := &file_sso_sso_proto_msgTypes[18]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use ForgotPasswordResponse.ProtoReflect.Descriptor instead.
+func (*ForgotPasswordResponse) Descriptor() ([]byte, []int) {
+	return file_sso_sso_proto_rawDescGZIP(), []int{18}
+}
+
+func (x *ForgotPasswordResponse) GetSuccess() bool {
+	if x != nil {
+		return x.Success
+	}
+	return false
+}
+
+func (x *ForgotPasswordResponse) GetMessage() string {
+	if x != nil {
+		return x.Message
+	}
+	return ""
+}
+
+func (x *ForgotPasswordResponse) GetExpiresAtUnix() int64 {
+	if x != nil {
+		return x.ExpiresAtUnix
+	}
+	return 0
+}
+
+type ResetPasswordResponse struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	Success       bool                   `protobuf:"varint,1,opt,name=success,proto3" json:"success,omitempty"`
+	Message       string                 `protobuf:"bytes,2,opt,name=message,proto3" json:"message,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *ResetPasswordResponse) Reset() {
+	*x = ResetPasswordResponse{}
+	mi := &file_sso_sso_proto_msgTypes[19]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *ResetPasswordResponse) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*ResetPasswordResponse) ProtoMessage() {}
+
+func (x *ResetPasswordResponse) ProtoReflect() protoreflect.Message {
+	mi := &file_sso_sso_proto_msgTypes[19]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use ResetPasswordResponse.ProtoReflect.Descriptor instead.
+func (*ResetPasswordResponse) Descriptor() ([]byte, []int) {
+	return file_sso_sso_proto_rawDescGZIP(), []int{19}
+}
+
+func (x *ResetPasswordResponse) GetSuccess() bool {
+	if x != nil {
+		return x.Success
+	}
+	return false
+}
+
+func (x *ResetPasswordResponse) GetMessage() string {
+	if x != nil {
+		return x.Message
+	}
+	return ""
+}
+
+type SendEmailVerificationResponse struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	Success       bool                   `protobuf:"varint,1,opt,name=success,proto3" json:"success,omitempty"`
+	Message       string                 `protobuf:"bytes,2,opt,name=message,proto3" json:"message,omitempty"`
+	ExpiresAtUnix int64                  `protobuf:"varint,3,opt,name=expires_at_unix,json=expiresAtUnix,proto3" json:"expires_at_unix,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *SendEmailVerificationResponse) Reset() {
+	*x = SendEmailVerificationResponse{}
+	mi := &file_sso_sso_proto_msgTypes[20]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *SendEmailVerificationResponse) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*SendEmailVerificationResponse) ProtoMessage() {}
+
+func (x *SendEmailVerificationResponse) ProtoReflect() protoreflect.Message {
+	mi := &file_sso_sso_proto_msgTypes[20]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use SendEmailVerificationResponse.ProtoReflect.Descriptor instead.
+func (*SendEmailVerificationResponse) Descriptor() ([]byte, []int) {
+	return file_sso_sso_proto_rawDescGZIP(), []int{20}
+}
+
+func (x *SendEmailVerificationResponse) GetSuccess() bool {
+	if x != nil {
+		return x.Success
+	}
+	return false
+}
+
+func (x *SendEmailVerificationResponse) GetMessage() string {
+	if x != nil {
+		return x.Message
+	}
+	return ""
+}
+
+func (x *SendEmailVerificationResponse) GetExpiresAtUnix() int64 {
+	if x != nil {
+		return x.ExpiresAtUnix
+	}
+	return 0
+}
+
+type EmailVerifyResponse struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	Success       bool                   `protobuf:"varint,1,opt,name=success,proto3" json:"success,omitempty"`
+	Message       string                 `protobuf:"bytes,2,opt,name=message,proto3" json:"message,omitempty"`
+	UserActivated bool                   `protobuf:"varint,3,opt,name=user_activated,json=userActivated,proto3" json:"user_activated,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *EmailVerifyResponse) Reset() {
+	*x = EmailVerifyResponse{}
+	mi := &file_sso_sso_proto_msgTypes[21]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *EmailVerifyResponse) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*EmailVerifyResponse) ProtoMessage() {}
+
+func (x *EmailVerifyResponse) ProtoReflect() protoreflect.Message {
+	mi := &file_sso_sso_proto_msgTypes[21]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use EmailVerifyResponse.ProtoReflect.Descriptor instead.
+func (*EmailVerifyResponse) Descriptor() ([]byte, []int) {
+	return file_sso_sso_proto_rawDescGZIP(), []int{21}
+}
+
+func (x *EmailVerifyResponse) GetSuccess() bool {
+	if x != nil {
+		return x.Success
+	}
+	return false
+}
+
+func (x *EmailVerifyResponse) GetMessage() string {
+	if x != nil {
+		return x.Message
+	}
+	return ""
+}
+
+func (x *EmailVerifyResponse) GetUserActivated() bool {
+	if x != nil {
+		return x.UserActivated
+	}
+	return false
+}
+
 var File_sso_sso_proto protoreflect.FileDescriptor
 
 const file_sso_sso_proto_rawDesc = "" +
 	"\n" +
-	"\rsso/sso.proto\x12\x04auth\x1a\x1bgoogle/protobuf/empty.proto\x1a\x1cgoogle/api/annotations.proto\x1a.protoc-gen-openapiv2/options/annotations.proto\"\x87\x01\n" +
+	"\rsso/sso.proto\x12\x04auth\x1a\x1cgoogle/api/annotations.proto\x1a.protoc-gen-openapiv2/options/annotations.proto\"\x87\x01\n" +
 	"\x0fRegisterRequest\x12\x12\n" +
 	"\x04name\x18\x01 \x01(\tR\x04name\x12\x14\n" +
 	"\x05phone\x18\x02 \x01(\tR\x05phone\x12\x18\n" +
@@ -1038,7 +1269,22 @@ const file_sso_sso_proto_rawDesc = "" +
 	"permission\x18\x02 \x01(\tR\n" +
 	"permission\"5\n" +
 	"\x19HasUserPermissionResponse\x12\x18\n" +
-	"\aallowed\x18\x01 \x01(\bR\aallowed2\x83\x0f\n" +
+	"\aallowed\x18\x01 \x01(\bR\aallowed\"t\n" +
+	"\x16ForgotPasswordResponse\x12\x18\n" +
+	"\asuccess\x18\x01 \x01(\bR\asuccess\x12\x18\n" +
+	"\amessage\x18\x02 \x01(\tR\amessage\x12&\n" +
+	"\x0fexpires_at_unix\x18\x03 \x01(\x03R\rexpiresAtUnix\"K\n" +
+	"\x15ResetPasswordResponse\x12\x18\n" +
+	"\asuccess\x18\x01 \x01(\bR\asuccess\x12\x18\n" +
+	"\amessage\x18\x02 \x01(\tR\amessage\"{\n" +
+	"\x1dSendEmailVerificationResponse\x12\x18\n" +
+	"\asuccess\x18\x01 \x01(\bR\asuccess\x12\x18\n" +
+	"\amessage\x18\x02 \x01(\tR\amessage\x12&\n" +
+	"\x0fexpires_at_unix\x18\x03 \x01(\x03R\rexpiresAtUnix\"p\n" +
+	"\x13EmailVerifyResponse\x12\x18\n" +
+	"\asuccess\x18\x01 \x01(\bR\asuccess\x12\x18\n" +
+	"\amessage\x18\x02 \x01(\tR\amessage\x12%\n" +
+	"\x0euser_activated\x18\x03 \x01(\bR\ruserActivated2\x9e\x0f\n" +
 	"\x04Auth\x12\xe9\x01\n" +
 	"\bRegister\x12\x15.auth.RegisterRequest\x1a\x16.auth.RegisterResponse\"\xad\x01\x92A\x8d\x01\n" +
 	"\x04Auth\x12\rRegister user\x1avRegister user based on general information (name, phone, address, email and password), returns user_id, name and email\x82\xd3\xe4\x93\x02\x16:\x01*\"\x11/v1/auth/register\x12\xef\x01\n" +
@@ -1050,14 +1296,14 @@ const file_sso_sso_proto_rawDesc = "" +
 	"\vGetUserInfo\x12\x18.auth.GetUserInfoRequest\x1a\x19.auth.GetUserInfoResponse\"}\x92Ae\n" +
 	"\x04Auth\x12\rGet user info\x1aNGet user info: user_id, name, phone, email, address. Based on the access token\x82\xd3\xe4\x93\x02\x0f\x12\r/v1/auth/user\x12\xcc\x01\n" +
 	"\fRefreshToken\x12\x19.auth.RefreshTokenRequest\x1a\x1a.auth.RefreshTokenResponse\"\x84\x01\x92Af\n" +
-	"\x04Auth\x12\x12Refresh the tokens\x1aJReturn new access and refresh tokens with expire time by the refresh token\x82\xd3\xe4\x93\x02\x15:\x01*\"\x10/v1/auth/refresh\x12\xd9\x01\n" +
-	"\x0eForgotPassword\x12\x1b.auth.ForgotPasswordRequest\x1a\x16.google.protobuf.Empty\"\x91\x01\x92Ak\n" +
-	"\x04Auth\x12\x17Forgot password request\x1aJBy providing the email and app_id will return token for resetting password\x82\xd3\xe4\x93\x02\x1d:\x01*\"\x18/v1/auth/forgot-password\x12\xd2\x01\n" +
-	"\rResetPassword\x12\x1a.auth.ResetPasswordRequest\x1a\x16.google.protobuf.Empty\"\x8c\x01\x92Ag\n" +
-	"\x04Auth\x12\x0eReset password\x1aOBy the token received when forgot password was requested, will refresh password\x82\xd3\xe4\x93\x02\x1c:\x01*\"\x17/v1/auth/reset-password\x12\xed\x01\n" +
-	"\x15SendEmailVerification\x12\".auth.SendEmailVerificationRequest\x1a\x16.google.protobuf.Empty\"\x97\x01\x92Ao\n" +
-	"\x04Auth\x12\x1fEmail verification will be send\x1aFEmail verification request sent after the registration, contains token\x82\xd3\xe4\x93\x02\x1f:\x01*\"\x1a/v1/auth/verification/send\x12\xc9\x01\n" +
-	"\vEmailVerify\x12\x18.auth.EmailVerifyRequest\x1a\x16.google.protobuf.Empty\"\x87\x01\x92A\\\n" +
+	"\x04Auth\x12\x12Refresh the tokens\x1aJReturn new access and refresh tokens with expire time by the refresh token\x82\xd3\xe4\x93\x02\x15:\x01*\"\x10/v1/auth/refresh\x12\xdf\x01\n" +
+	"\x0eForgotPassword\x12\x1b.auth.ForgotPasswordRequest\x1a\x1c.auth.ForgotPasswordResponse\"\x91\x01\x92Ak\n" +
+	"\x04Auth\x12\x17Forgot password request\x1aJBy providing the email and app_id will return token for resetting password\x82\xd3\xe4\x93\x02\x1d:\x01*\"\x18/v1/auth/forgot-password\x12\xd7\x01\n" +
+	"\rResetPassword\x12\x1a.auth.ResetPasswordRequest\x1a\x1b.auth.ResetPasswordResponse\"\x8c\x01\x92Ag\n" +
+	"\x04Auth\x12\x0eReset password\x1aOBy the token received when forgot password was requested, will refresh password\x82\xd3\xe4\x93\x02\x1c:\x01*\"\x17/v1/auth/reset-password\x12\xfa\x01\n" +
+	"\x15SendEmailVerification\x12\".auth.SendEmailVerificationRequest\x1a#.auth.SendEmailVerificationResponse\"\x97\x01\x92Ao\n" +
+	"\x04Auth\x12\x1fEmail verification will be send\x1aFEmail verification request sent after the registration, contains token\x82\xd3\xe4\x93\x02\x1f:\x01*\"\x1a/v1/auth/verification/send\x12\xcc\x01\n" +
+	"\vEmailVerify\x12\x18.auth.EmailVerifyRequest\x1a\x19.auth.EmailVerifyResponse\"\x87\x01\x92A\\\n" +
 	"\x04Auth\x12\x1fEmail verification confirmation\x1a3Email will be verified after the token is confirmed\x82\xd3\xe4\x93\x02\":\x01*\"\x1d/v1/auth/verification/confirm2\xef\x03\n" +
 	"\n" +
 	"Permission\x12\xd3\x01\n" +
@@ -1081,27 +1327,30 @@ func file_sso_sso_proto_rawDescGZIP() []byte {
 	return file_sso_sso_proto_rawDescData
 }
 
-var file_sso_sso_proto_msgTypes = make([]protoimpl.MessageInfo, 18)
+var file_sso_sso_proto_msgTypes = make([]protoimpl.MessageInfo, 22)
 var file_sso_sso_proto_goTypes = []any{
-	(*RegisterRequest)(nil),              // 0: auth.RegisterRequest
-	(*RegisterResponse)(nil),             // 1: auth.RegisterResponse
-	(*LoginRequest)(nil),                 // 2: auth.LoginRequest
-	(*LoginResponse)(nil),                // 3: auth.LoginResponse
-	(*LogoutRequest)(nil),                // 4: auth.LogoutRequest
-	(*LogoutResponse)(nil),               // 5: auth.LogoutResponse
-	(*GetUserInfoRequest)(nil),           // 6: auth.GetUserInfoRequest
-	(*GetUserInfoResponse)(nil),          // 7: auth.GetUserInfoResponse
-	(*RefreshTokenRequest)(nil),          // 8: auth.RefreshTokenRequest
-	(*RefreshTokenResponse)(nil),         // 9: auth.RefreshTokenResponse
-	(*ForgotPasswordRequest)(nil),        // 10: auth.ForgotPasswordRequest
-	(*ResetPasswordRequest)(nil),         // 11: auth.ResetPasswordRequest
-	(*SendEmailVerificationRequest)(nil), // 12: auth.SendEmailVerificationRequest
-	(*EmailVerifyRequest)(nil),           // 13: auth.EmailVerifyRequest
-	(*GetUserPermissionsRequest)(nil),    // 14: auth.GetUserPermissionsRequest
-	(*GetUserPermissionsResponse)(nil),   // 15: auth.GetUserPermissionsResponse
-	(*HasUserPermissionRequest)(nil),     // 16: auth.HasUserPermissionRequest
-	(*HasUserPermissionResponse)(nil),    // 17: auth.HasUserPermissionResponse
-	(*emptypb.Empty)(nil),                // 18: google.protobuf.Empty
+	(*RegisterRequest)(nil),               // 0: auth.RegisterRequest
+	(*RegisterResponse)(nil),              // 1: auth.RegisterResponse
+	(*LoginRequest)(nil),                  // 2: auth.LoginRequest
+	(*LoginResponse)(nil),                 // 3: auth.LoginResponse
+	(*LogoutRequest)(nil),                 // 4: auth.LogoutRequest
+	(*LogoutResponse)(nil),                // 5: auth.LogoutResponse
+	(*GetUserInfoRequest)(nil),            // 6: auth.GetUserInfoRequest
+	(*GetUserInfoResponse)(nil),           // 7: auth.GetUserInfoResponse
+	(*RefreshTokenRequest)(nil),           // 8: auth.RefreshTokenRequest
+	(*RefreshTokenResponse)(nil),          // 9: auth.RefreshTokenResponse
+	(*ForgotPasswordRequest)(nil),         // 10: auth.ForgotPasswordRequest
+	(*ResetPasswordRequest)(nil),          // 11: auth.ResetPasswordRequest
+	(*SendEmailVerificationRequest)(nil),  // 12: auth.SendEmailVerificationRequest
+	(*EmailVerifyRequest)(nil),            // 13: auth.EmailVerifyRequest
+	(*GetUserPermissionsRequest)(nil),     // 14: auth.GetUserPermissionsRequest
+	(*GetUserPermissionsResponse)(nil),    // 15: auth.GetUserPermissionsResponse
+	(*HasUserPermissionRequest)(nil),      // 16: auth.HasUserPermissionRequest
+	(*HasUserPermissionResponse)(nil),     // 17: auth.HasUserPermissionResponse
+	(*ForgotPasswordResponse)(nil),        // 18: auth.ForgotPasswordResponse
+	(*ResetPasswordResponse)(nil),         // 19: auth.ResetPasswordResponse
+	(*SendEmailVerificationResponse)(nil), // 20: auth.SendEmailVerificationResponse
+	(*EmailVerifyResponse)(nil),           // 21: auth.EmailVerifyResponse
 }
 var file_sso_sso_proto_depIdxs = []int32{
 	0,  // 0: auth.Auth.Register:input_type -> auth.RegisterRequest
@@ -1120,10 +1369,10 @@ var file_sso_sso_proto_depIdxs = []int32{
 	5,  // 13: auth.Auth.Logout:output_type -> auth.LogoutResponse
 	7,  // 14: auth.Auth.GetUserInfo:output_type -> auth.GetUserInfoResponse
 	9,  // 15: auth.Auth.RefreshToken:output_type -> auth.RefreshTokenResponse
-	18, // 16: auth.Auth.ForgotPassword:output_type -> google.protobuf.Empty
-	18, // 17: auth.Auth.ResetPassword:output_type -> google.protobuf.Empty
-	18, // 18: auth.Auth.SendEmailVerification:output_type -> google.protobuf.Empty
-	18, // 19: auth.Auth.EmailVerify:output_type -> google.protobuf.Empty
+	18, // 16: auth.Auth.ForgotPassword:output_type -> auth.ForgotPasswordResponse
+	19, // 17: auth.Auth.ResetPassword:output_type -> auth.ResetPasswordResponse
+	20, // 18: auth.Auth.SendEmailVerification:output_type -> auth.SendEmailVerificationResponse
+	21, // 19: auth.Auth.EmailVerify:output_type -> auth.EmailVerifyResponse
 	15, // 20: auth.Permission.GetUserPermissions:output_type -> auth.GetUserPermissionsResponse
 	17, // 21: auth.Permission.HasUserPermission:output_type -> auth.HasUserPermissionResponse
 	11, // [11:22] is the sub-list for method output_type
@@ -1144,7 +1393,7 @@ func file_sso_sso_proto_init() {
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
 			RawDescriptor: unsafe.Slice(unsafe.StringData(file_sso_sso_proto_rawDesc), len(file_sso_sso_proto_rawDesc)),
 			NumEnums:      0,
-			NumMessages:   18,
+			NumMessages:   22,
 			NumExtensions: 0,
 			NumServices:   2,
 		},

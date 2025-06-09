@@ -11,7 +11,6 @@ import (
 	grpc "google.golang.org/grpc"
 	codes "google.golang.org/grpc/codes"
 	status "google.golang.org/grpc/status"
-	emptypb "google.golang.org/protobuf/types/known/emptypb"
 )
 
 // This is a compile-time assertion to ensure that this generated file
@@ -40,10 +39,10 @@ type AuthClient interface {
 	Logout(ctx context.Context, in *LogoutRequest, opts ...grpc.CallOption) (*LogoutResponse, error)
 	GetUserInfo(ctx context.Context, in *GetUserInfoRequest, opts ...grpc.CallOption) (*GetUserInfoResponse, error)
 	RefreshToken(ctx context.Context, in *RefreshTokenRequest, opts ...grpc.CallOption) (*RefreshTokenResponse, error)
-	ForgotPassword(ctx context.Context, in *ForgotPasswordRequest, opts ...grpc.CallOption) (*emptypb.Empty, error)
-	ResetPassword(ctx context.Context, in *ResetPasswordRequest, opts ...grpc.CallOption) (*emptypb.Empty, error)
-	SendEmailVerification(ctx context.Context, in *SendEmailVerificationRequest, opts ...grpc.CallOption) (*emptypb.Empty, error)
-	EmailVerify(ctx context.Context, in *EmailVerifyRequest, opts ...grpc.CallOption) (*emptypb.Empty, error)
+	ForgotPassword(ctx context.Context, in *ForgotPasswordRequest, opts ...grpc.CallOption) (*ForgotPasswordResponse, error)
+	ResetPassword(ctx context.Context, in *ResetPasswordRequest, opts ...grpc.CallOption) (*ResetPasswordResponse, error)
+	SendEmailVerification(ctx context.Context, in *SendEmailVerificationRequest, opts ...grpc.CallOption) (*SendEmailVerificationResponse, error)
+	EmailVerify(ctx context.Context, in *EmailVerifyRequest, opts ...grpc.CallOption) (*EmailVerifyResponse, error)
 }
 
 type authClient struct {
@@ -104,9 +103,9 @@ func (c *authClient) RefreshToken(ctx context.Context, in *RefreshTokenRequest, 
 	return out, nil
 }
 
-func (c *authClient) ForgotPassword(ctx context.Context, in *ForgotPasswordRequest, opts ...grpc.CallOption) (*emptypb.Empty, error) {
+func (c *authClient) ForgotPassword(ctx context.Context, in *ForgotPasswordRequest, opts ...grpc.CallOption) (*ForgotPasswordResponse, error) {
 	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
-	out := new(emptypb.Empty)
+	out := new(ForgotPasswordResponse)
 	err := c.cc.Invoke(ctx, Auth_ForgotPassword_FullMethodName, in, out, cOpts...)
 	if err != nil {
 		return nil, err
@@ -114,9 +113,9 @@ func (c *authClient) ForgotPassword(ctx context.Context, in *ForgotPasswordReque
 	return out, nil
 }
 
-func (c *authClient) ResetPassword(ctx context.Context, in *ResetPasswordRequest, opts ...grpc.CallOption) (*emptypb.Empty, error) {
+func (c *authClient) ResetPassword(ctx context.Context, in *ResetPasswordRequest, opts ...grpc.CallOption) (*ResetPasswordResponse, error) {
 	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
-	out := new(emptypb.Empty)
+	out := new(ResetPasswordResponse)
 	err := c.cc.Invoke(ctx, Auth_ResetPassword_FullMethodName, in, out, cOpts...)
 	if err != nil {
 		return nil, err
@@ -124,9 +123,9 @@ func (c *authClient) ResetPassword(ctx context.Context, in *ResetPasswordRequest
 	return out, nil
 }
 
-func (c *authClient) SendEmailVerification(ctx context.Context, in *SendEmailVerificationRequest, opts ...grpc.CallOption) (*emptypb.Empty, error) {
+func (c *authClient) SendEmailVerification(ctx context.Context, in *SendEmailVerificationRequest, opts ...grpc.CallOption) (*SendEmailVerificationResponse, error) {
 	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
-	out := new(emptypb.Empty)
+	out := new(SendEmailVerificationResponse)
 	err := c.cc.Invoke(ctx, Auth_SendEmailVerification_FullMethodName, in, out, cOpts...)
 	if err != nil {
 		return nil, err
@@ -134,9 +133,9 @@ func (c *authClient) SendEmailVerification(ctx context.Context, in *SendEmailVer
 	return out, nil
 }
 
-func (c *authClient) EmailVerify(ctx context.Context, in *EmailVerifyRequest, opts ...grpc.CallOption) (*emptypb.Empty, error) {
+func (c *authClient) EmailVerify(ctx context.Context, in *EmailVerifyRequest, opts ...grpc.CallOption) (*EmailVerifyResponse, error) {
 	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
-	out := new(emptypb.Empty)
+	out := new(EmailVerifyResponse)
 	err := c.cc.Invoke(ctx, Auth_EmailVerify_FullMethodName, in, out, cOpts...)
 	if err != nil {
 		return nil, err
@@ -153,10 +152,10 @@ type AuthServer interface {
 	Logout(context.Context, *LogoutRequest) (*LogoutResponse, error)
 	GetUserInfo(context.Context, *GetUserInfoRequest) (*GetUserInfoResponse, error)
 	RefreshToken(context.Context, *RefreshTokenRequest) (*RefreshTokenResponse, error)
-	ForgotPassword(context.Context, *ForgotPasswordRequest) (*emptypb.Empty, error)
-	ResetPassword(context.Context, *ResetPasswordRequest) (*emptypb.Empty, error)
-	SendEmailVerification(context.Context, *SendEmailVerificationRequest) (*emptypb.Empty, error)
-	EmailVerify(context.Context, *EmailVerifyRequest) (*emptypb.Empty, error)
+	ForgotPassword(context.Context, *ForgotPasswordRequest) (*ForgotPasswordResponse, error)
+	ResetPassword(context.Context, *ResetPasswordRequest) (*ResetPasswordResponse, error)
+	SendEmailVerification(context.Context, *SendEmailVerificationRequest) (*SendEmailVerificationResponse, error)
+	EmailVerify(context.Context, *EmailVerifyRequest) (*EmailVerifyResponse, error)
 	mustEmbedUnimplementedAuthServer()
 }
 
@@ -182,16 +181,16 @@ func (UnimplementedAuthServer) GetUserInfo(context.Context, *GetUserInfoRequest)
 func (UnimplementedAuthServer) RefreshToken(context.Context, *RefreshTokenRequest) (*RefreshTokenResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method RefreshToken not implemented")
 }
-func (UnimplementedAuthServer) ForgotPassword(context.Context, *ForgotPasswordRequest) (*emptypb.Empty, error) {
+func (UnimplementedAuthServer) ForgotPassword(context.Context, *ForgotPasswordRequest) (*ForgotPasswordResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method ForgotPassword not implemented")
 }
-func (UnimplementedAuthServer) ResetPassword(context.Context, *ResetPasswordRequest) (*emptypb.Empty, error) {
+func (UnimplementedAuthServer) ResetPassword(context.Context, *ResetPasswordRequest) (*ResetPasswordResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method ResetPassword not implemented")
 }
-func (UnimplementedAuthServer) SendEmailVerification(context.Context, *SendEmailVerificationRequest) (*emptypb.Empty, error) {
+func (UnimplementedAuthServer) SendEmailVerification(context.Context, *SendEmailVerificationRequest) (*SendEmailVerificationResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method SendEmailVerification not implemented")
 }
-func (UnimplementedAuthServer) EmailVerify(context.Context, *EmailVerifyRequest) (*emptypb.Empty, error) {
+func (UnimplementedAuthServer) EmailVerify(context.Context, *EmailVerifyRequest) (*EmailVerifyResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method EmailVerify not implemented")
 }
 func (UnimplementedAuthServer) mustEmbedUnimplementedAuthServer() {}

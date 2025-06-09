@@ -22,6 +22,8 @@
   "paths": {
     "/v1/profiles": {
       "get": {
+        "summary": "List profiles (for admins)",
+        "description": "List profiles by limiting and pagination",
         "operationId": "ProfileService_ListProfiles",
         "responses": {
           "200": {
@@ -42,15 +44,28 @@
             "name": "page",
             "in": "query",
             "required": false,
-            "type": "integer",
-            "format": "int32"
+            "type": "string",
+            "format": "int64"
           },
           {
             "name": "limit",
             "in": "query",
             "required": false,
-            "type": "integer",
-            "format": "int32"
+            "type": "string",
+            "format": "int64"
+          },
+          {
+            "name": "sortBy",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "sortOrder",
+            "description": "ASC OR DESC",
+            "in": "query",
+            "required": false,
+            "type": "string"
           }
         ],
         "tags": [
@@ -58,6 +73,8 @@
         ]
       },
       "post": {
+        "summary": "Create user profile",
+        "description": "Creates user profile by the data input automatically",
         "operationId": "ProfileService_CreateProfile",
         "responses": {
           "200": {
@@ -86,10 +103,45 @@
         "tags": [
           "Profile"
         ]
+      },
+      "patch": {
+        "summary": "Update user password",
+        "description": "Update user password by providing old and new passwords",
+        "operationId": "ProfileService_UpdatePassword",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/profileUpdatePasswordResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/profileUpdatePasswordRequest"
+            }
+          }
+        ],
+        "tags": [
+          "Profile",
+          "Auth"
+        ]
       }
     },
     "/v1/profiles/by-user/{userId}": {
       "get": {
+        "summary": "Get user profile by user_id (auth)",
+        "description": "Get user profile by user_id from auth service (int64)",
         "operationId": "ProfileService_GetProfileByUserID",
         "responses": {
           "200": {
@@ -115,12 +167,15 @@
           }
         ],
         "tags": [
-          "Profile"
+          "Profile",
+          "Auth"
         ]
       }
     },
     "/v1/profiles/{id}": {
       "get": {
+        "summary": "Get user profile by id (profile)",
+        "description": "Get user profile by profile id (string UUID) (important to not mix with user_id from auth)",
         "operationId": "ProfileService_GetProfile",
         "responses": {
           "200": {
@@ -149,13 +204,14 @@
         ]
       },
       "delete": {
+        "summary": "Delete user profile",
+        "description": "Delete user profile by UUID profile id string ",
         "operationId": "ProfileService_DeleteProfile",
         "responses": {
           "200": {
             "description": "A successful response.",
             "schema": {
-              "type": "object",
-              "properties": {}
+              "$ref": "#/definitions/profileDeleteProfileResponse"
             }
           },
           "default": {
@@ -178,6 +234,8 @@
         ]
       },
       "patch": {
+        "summary": "Update user profile PATCH",
+        "description": "Update user profile partially or fully depending on request",
         "operationId": "ProfileService_UpdateProfile",
         "responses": {
           "200": {
@@ -210,7 +268,8 @@
           }
         ],
         "tags": [
-          "Profile"
+          "Profile",
+          "Auth"
         ]
       }
     }
@@ -227,6 +286,10 @@
         },
         "address": {
           "type": "string"
+        },
+        "token": {
+          "type": "string",
+          "title": "authentication"
         }
       }
     },
@@ -251,6 +314,17 @@
         }
       }
     },
+    "profileDeleteProfileResponse": {
+      "type": "object",
+      "properties": {
+        "success": {
+          "type": "boolean"
+        },
+        "message": {
+          "type": "string"
+        }
+      }
+    },
     "profileListProfilesResponse": {
       "type": "object",
       "properties": {
@@ -262,9 +336,20 @@
           }
         },
         "total": {
-          "type": "integer",
-          "format": "int32",
+          "type": "string",
+          "format": "int64",
           "title": "is int32 enough?"
+        },
+        "page": {
+          "type": "string",
+          "format": "int64"
+        },
+        "limit": {
+          "type": "string",
+          "format": "int64"
+        },
+        "hasNext": {
+          "type": "boolean"
         }
       }
     },
@@ -273,6 +358,32 @@
       "properties": {
         "profile": {
           "$ref": "#/definitions/profileUserProfile"
+        }
+      }
+    },
+    "profileUpdatePasswordRequest": {
+      "type": "object",
+      "properties": {
+        "token": {
+          "type": "string",
+          "title": "authentication"
+        },
+        "oldPassword": {
+          "type": "string"
+        },
+        "newPassword": {
+          "type": "string"
+        }
+      }
+    },
+    "profileUpdatePasswordResponse": {
+      "type": "object",
+      "properties": {
+        "success": {
+          "type": "boolean"
+        },
+        "message": {
+          "type": "string"
         }
       }
     },

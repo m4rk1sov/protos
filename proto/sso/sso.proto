@@ -2,7 +2,6 @@ syntax = "proto3";
 
 package auth;
 
-import "google/protobuf/empty.proto";
 import "google/api/annotations.proto";
 import "protoc-gen-openapiv2/options/annotations.proto";
 
@@ -74,7 +73,7 @@ service Auth {
     };
   }
 
-  rpc ForgotPassword (ForgotPasswordRequest) returns (google.protobuf.Empty) {
+  rpc ForgotPassword (ForgotPasswordRequest) returns (ForgotPasswordResponse) {
     option (google.api.http) = {
       post: "/v1/auth/forgot-password"
       body: "*"
@@ -85,7 +84,7 @@ service Auth {
       description: "By providing the email and app_id will return token for resetting password"
     };
   }
-  rpc ResetPassword (ResetPasswordRequest) returns (google.protobuf.Empty) {
+  rpc ResetPassword (ResetPasswordRequest) returns (ResetPasswordResponse) {
     option (google.api.http) = {
       post: "/v1/auth/reset-password"
       body: "*"
@@ -97,7 +96,7 @@ service Auth {
     };
   }
 
-  rpc SendEmailVerification (SendEmailVerificationRequest) returns (google.protobuf.Empty) {
+  rpc SendEmailVerification (SendEmailVerificationRequest) returns (SendEmailVerificationResponse) {
     option (google.api.http) = {
       post: "/v1/auth/verification/send"
       body: "*"
@@ -108,7 +107,7 @@ service Auth {
       description: "Email verification request sent after the registration, contains token"
     };
   }
-  rpc EmailVerify (EmailVerifyRequest) returns (google.protobuf.Empty) {
+  rpc EmailVerify (EmailVerifyRequest) returns (EmailVerifyResponse) {
     option (google.api.http) = {
       post: "/v1/auth/verification/confirm"
       body: "*"
@@ -237,4 +236,27 @@ message HasUserPermissionRequest {
 
 message HasUserPermissionResponse {
   bool allowed = 1;
+}
+
+message ForgotPasswordResponse {
+  bool success = 1;
+  string message = 2;
+  int64 expires_at_unix = 3;
+}
+
+message ResetPasswordResponse {
+  bool success = 1;
+  string message = 2;
+}
+
+message SendEmailVerificationResponse {
+  bool success = 1;
+  string message = 2;
+  int64 expires_at_unix = 3;
+}
+
+message EmailVerifyResponse {
+  bool success = 1;
+  string message = 2;
+  bool user_activated = 3;
 }
