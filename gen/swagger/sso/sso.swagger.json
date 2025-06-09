@@ -418,7 +418,7 @@
         "message": {
           "type": "string"
         },
-        "userActivated": {
+        "activated": {
           "type": "boolean"
         }
       }
@@ -468,6 +468,9 @@
         },
         "address": {
           "type": "string"
+        },
+        "activated": {
+          "type": "boolean"
         }
       }
     },
@@ -592,6 +595,9 @@
         },
         "email": {
           "type": "string"
+        },
+        "activated": {
+          "type": "boolean"
         }
       }
     },

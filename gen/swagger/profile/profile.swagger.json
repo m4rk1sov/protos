@@ -337,8 +337,7 @@
         },
         "total": {
           "type": "string",
-          "format": "int64",
-          "title": "is int32 enough?"
+          "format": "int64"
         },
         "page": {
           "type": "string",
@@ -391,8 +390,7 @@
       "type": "object",
       "properties": {
         "id": {
-          "type": "string",
-          "title": "UUIDs for ID fields?"
+          "type": "string"
         },
         "userId": {
           "type": "string",

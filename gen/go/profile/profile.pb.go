@@ -24,14 +24,13 @@ const (
 )
 
 type UserProfile struct {
-	state protoimpl.MessageState `protogen:"open.v1"`
-	// UUIDs for ID fields?
-	Id            string `protobuf:"bytes,1,opt,name=id,proto3" json:"id,omitempty"`
-	UserId        int64  `protobuf:"varint,2,opt,name=user_id,json=userId,proto3" json:"user_id,omitempty"`
-	Name          string `protobuf:"bytes,3,opt,name=name,proto3" json:"name,omitempty"`
-	Phone         string `protobuf:"bytes,4,opt,name=phone,proto3" json:"phone,omitempty"`
-	Address       string `protobuf:"bytes,5,opt,name=address,proto3" json:"address,omitempty"`
-	Email         string `protobuf:"bytes,6,opt,name=email,proto3" json:"email,omitempty"`
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	Id            string                 `protobuf:"bytes,1,opt,name=id,proto3" json:"id,omitempty"`
+	UserId        int64                  `protobuf:"varint,2,opt,name=user_id,json=userId,proto3" json:"user_id,omitempty"`
+	Name          string                 `protobuf:"bytes,3,opt,name=name,proto3" json:"name,omitempty"`
+	Phone         string                 `protobuf:"bytes,4,opt,name=phone,proto3" json:"phone,omitempty"`
+	Address       string                 `protobuf:"bytes,5,opt,name=address,proto3" json:"address,omitempty"`
+	Email         string                 `protobuf:"bytes,6,opt,name=email,proto3" json:"email,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -669,13 +668,12 @@ func (x *ProfileResponse) GetProfile() *UserProfile {
 }
 
 type ListProfilesResponse struct {
-	state    protoimpl.MessageState `protogen:"open.v1"`
-	Profiles []*UserProfile         `protobuf:"bytes,1,rep,name=profiles,proto3" json:"profiles,omitempty"`
-	// is int32 enough?
-	Total         int64 `protobuf:"varint,2,opt,name=total,proto3" json:"total,omitempty"`
-	Page          int64 `protobuf:"varint,3,opt,name=page,proto3" json:"page,omitempty"`
-	Limit         int64 `protobuf:"varint,4,opt,name=limit,proto3" json:"limit,omitempty"`
-	HasNext       bool  `protobuf:"varint,5,opt,name=has_next,json=hasNext,proto3" json:"has_next,omitempty"`
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	Profiles      []*UserProfile         `protobuf:"bytes,1,rep,name=profiles,proto3" json:"profiles,omitempty"`
+	Total         int64                  `protobuf:"varint,2,opt,name=total,proto3" json:"total,omitempty"`
+	Page          int64                  `protobuf:"varint,3,opt,name=page,proto3" json:"page,omitempty"`
+	Limit         int64                  `protobuf:"varint,4,opt,name=limit,proto3" json:"limit,omitempty"`
+	HasNext       bool                   `protobuf:"varint,5,opt,name=has_next,json=hasNext,proto3" json:"has_next,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }

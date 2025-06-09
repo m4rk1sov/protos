@@ -156,6 +156,7 @@ message RegisterResponse {
   int64 user_id = 1;
   string name = 2;
   string email = 3;
+  bool activated = 4;
 }
 
 message LoginRequest {
@@ -188,6 +189,7 @@ message GetUserInfoResponse {
   string name = 3;
   string phone = 4;
   string address = 5;
+  bool activated = 6;
 }
 
 message RefreshTokenRequest {
@@ -205,9 +207,20 @@ message ForgotPasswordRequest {
   int32 app_id = 2;
 }
 
+message ForgotPasswordResponse {
+  bool success = 1;
+  string message = 2;
+  int64 expires_at_unix = 3;
+}
+
 message ResetPasswordRequest {
   string token = 1;
   string new_password = 2;
+}
+
+message ResetPasswordResponse {
+  bool success = 1;
+  string message = 2;
 }
 
 message SendEmailVerificationRequest {
@@ -215,11 +228,22 @@ message SendEmailVerificationRequest {
   int32 app_id = 2;
 }
 
+message SendEmailVerificationResponse {
+  bool success = 1;
+  string message = 2;
+  int64 expires_at_unix = 3;
+}
+
+
 message EmailVerifyRequest {
   string token = 1;
 }
 
-//message Empty {}
+message EmailVerifyResponse {
+  bool success = 1;
+  string message = 2;
+  bool activated = 3;
+}
 
 message GetUserPermissionsRequest {
   int64 user_id = 1;
@@ -236,27 +260,4 @@ message HasUserPermissionRequest {
 
 message HasUserPermissionResponse {
   bool allowed = 1;
-}
-
-message ForgotPasswordResponse {
-  bool success = 1;
-  string message = 2;
-  int64 expires_at_unix = 3;
-}
-
-message ResetPasswordResponse {
-  bool success = 1;
-  string message = 2;
-}
-
-message SendEmailVerificationResponse {
-  bool success = 1;
-  string message = 2;
-  int64 expires_at_unix = 3;
-}
-
-message EmailVerifyResponse {
-  bool success = 1;
-  string message = 2;
-  bool user_activated = 3;
 }

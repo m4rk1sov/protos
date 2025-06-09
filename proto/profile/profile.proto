@@ -94,7 +94,6 @@ service ProfileService {
 }
 
 message UserProfile {
-  // UUIDs for ID fields?
   string id = 1;
   int64 user_id = 2;
   string name = 3;
@@ -160,7 +159,6 @@ message ProfileResponse {
 
 message ListProfilesResponse {
   repeated UserProfile profiles = 1;
-  // is int32 enough?
   int64 total = 2;
   int64 page = 3;
   int64 limit = 4;
