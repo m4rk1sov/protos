@@ -1302,7 +1302,7 @@ const file_sso_sso_proto_rawDesc = "" +
 	"permission\x18\x02 \x01(\tR\n" +
 	"permission\"5\n" +
 	"\x19HasUserPermissionResponse\x12\x18\n" +
-	"\aallowed\x18\x01 \x01(\bR\aallowed2\x9e\x0f\n" +
+	"\aallowed\x18\x01 \x01(\bR\aallowed2\xa7\x0f\n" +
 	"\x04Auth\x12\xe9\x01\n" +
 	"\bRegister\x12\x15.auth.RegisterRequest\x1a\x16.auth.RegisterResponse\"\xad\x01\x92A\x8d\x01\n" +
 	"\x04Auth\x12\rRegister user\x1avRegister user based on general information (name, phone, address, email and password), returns user_id, name and email\x82\xd3\xe4\x93\x02\x16:\x01*\"\x11/v1/auth/register\x12\xef\x01\n" +
@@ -1310,9 +1310,9 @@ const file_sso_sso_proto_rawDesc = "" +
 	"\x04Auth\x12\n" +
 	"Login user\x1a\x8a\x01Login user, by email and password, provide the app_id for for permission check further, returns access and refresh tokens with expire time\x82\xd3\xe4\x93\x02\x13:\x01*\"\x0e/v1/auth/login\x12\x9c\x01\n" +
 	"\x06Logout\x12\x13.auth.LogoutRequest\x1a\x14.auth.LogoutResponse\"g\x92AJ\n" +
-	"\x04Auth\x12\vLogout user\x1a5Logout user by refresh token, deletes the token in DB\x82\xd3\xe4\x93\x02\x14:\x01*\"\x0f/v1/auth/logout\x12\xc1\x01\n" +
-	"\vGetUserInfo\x12\x18.auth.GetUserInfoRequest\x1a\x19.auth.GetUserInfoResponse\"}\x92Ae\n" +
-	"\x04Auth\x12\rGet user info\x1aNGet user info: user_id, name, phone, email, address. Based on the access token\x82\xd3\xe4\x93\x02\x0f\x12\r/v1/auth/user\x12\xcc\x01\n" +
+	"\x04Auth\x12\vLogout user\x1a5Logout user by refresh token, deletes the token in DB\x82\xd3\xe4\x93\x02\x14:\x01*\"\x0f/v1/auth/logout\x12\xc5\x01\n" +
+	"\vGetUserInfo\x12\x18.auth.GetUserInfoRequest\x1a\x19.auth.GetUserInfoResponse\"\x80\x01\x92Ae\n" +
+	"\x04Auth\x12\rGet user info\x1aNGet user info: user_id, name, phone, email, address. Based on the access token\x82\xd3\xe4\x93\x02\x12:\x01*\"\r/v1/auth/user\x12\xcc\x01\n" +
 	"\fRefreshToken\x12\x19.auth.RefreshTokenRequest\x1a\x1a.auth.RefreshTokenResponse\"\x84\x01\x92Af\n" +
 	"\x04Auth\x12\x12Refresh the tokens\x1aJReturn new access and refresh tokens with expire time by the refresh token\x82\xd3\xe4\x93\x02\x15:\x01*\"\x10/v1/auth/refresh\x12\xdf\x01\n" +
 	"\x0eForgotPassword\x12\x1b.auth.ForgotPasswordRequest\x1a\x1c.auth.ForgotPasswordResponse\"\x91\x01\x92Ak\n" +
@@ -1320,9 +1320,9 @@ const file_sso_sso_proto_rawDesc = "" +
 	"\rResetPassword\x12\x1a.auth.ResetPasswordRequest\x1a\x1b.auth.ResetPasswordResponse\"\x8c\x01\x92Ag\n" +
 	"\x04Auth\x12\x0eReset password\x1aOBy the token received when forgot password was requested, will refresh password\x82\xd3\xe4\x93\x02\x1c:\x01*\"\x17/v1/auth/reset-password\x12\xfa\x01\n" +
 	"\x15SendEmailVerification\x12\".auth.SendEmailVerificationRequest\x1a#.auth.SendEmailVerificationResponse\"\x97\x01\x92Ao\n" +
-	"\x04Auth\x12\x1fEmail verification will be send\x1aFEmail verification request sent after the registration, contains token\x82\xd3\xe4\x93\x02\x1f:\x01*\"\x1a/v1/auth/verification/send\x12\xcc\x01\n" +
-	"\vEmailVerify\x12\x18.auth.EmailVerifyRequest\x1a\x19.auth.EmailVerifyResponse\"\x87\x01\x92A\\\n" +
-	"\x04Auth\x12\x1fEmail verification confirmation\x1a3Email will be verified after the token is confirmed\x82\xd3\xe4\x93\x02\":\x01*\"\x1d/v1/auth/verification/confirm2\xef\x03\n" +
+	"\x04Auth\x12\x1fEmail verification will be send\x1aFEmail verification request sent after the registration, contains token\x82\xd3\xe4\x93\x02\x1f:\x01*\"\x1a/v1/auth/verification/send\x12\xd1\x01\n" +
+	"\vEmailVerify\x12\x18.auth.EmailVerifyRequest\x1a\x19.auth.EmailVerifyResponse\"\x8c\x01\x92A\\\n" +
+	"\x04Auth\x12\x1fEmail verification confirmation\x1a3Email will be verified after the token is confirmed\x82\xd3\xe4\x93\x02'\x12%/v1/auth/verification/confirm/{token}2\xef\x03\n" +
 	"\n" +
 	"Permission\x12\xd3\x01\n" +
 	"\x12GetUserPermissions\x12\x1f.auth.GetUserPermissionsRequest\x1a .auth.GetUserPermissionsResponse\"z\x92AV\n" +

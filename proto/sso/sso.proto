@@ -53,7 +53,8 @@ service Auth {
   }
   rpc GetUserInfo (GetUserInfoRequest) returns (GetUserInfoResponse) {
     option (google.api.http) = {
-      get: "/v1/auth/user"
+      post: "/v1/auth/user"
+      body: "*"
     };
     option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
       tags: ["Auth"];
@@ -109,8 +110,7 @@ service Auth {
   }
   rpc EmailVerify (EmailVerifyRequest) returns (EmailVerifyResponse) {
     option (google.api.http) = {
-      post: "/v1/auth/verification/confirm"
-      body: "*"
+      get: "/v1/auth/verification/confirm/{token}"
     };
     option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
       tags: ["Auth"];
