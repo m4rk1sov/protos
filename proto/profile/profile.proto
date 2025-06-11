@@ -2,6 +2,7 @@ syntax = "proto3";
 
 package profile;
 
+import "google/rpc/status.proto";
 import "google/api/annotations.proto";
 import "protoc-gen-openapiv2/options/annotations.proto";
 
@@ -70,17 +71,6 @@ service ProfileService {
       description: "Delete user profile by UUID profile id string "
     };
   }
-  rpc UpdatePassword (UpdatePasswordRequest) returns (UpdatePasswordResponse) {
-    option (google.api.http) = {
-      patch: "/v1/profiles"
-      body: "*"
-    };
-    option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
-      tags: ["Profile", "Auth"];
-      summary: "Update user password"
-      description: "Update user password by providing old and new passwords"
-    };
-  }
   rpc ListProfiles (ListProfilesRequest) returns (ListProfilesResponse) {
     option (google.api.http) = {
       get: "/v1/profiles"
@@ -123,7 +113,6 @@ message UpdateProfileRequest {
   optional string name = 2;
   optional string phone = 3;
   optional string address = 4;
-  string token = 5; // authentication
 }
 
 message DeleteProfileRequest {
@@ -131,17 +120,6 @@ message DeleteProfileRequest {
 }
 
 message DeleteProfileResponse {
-  bool success = 1;
-  string message = 2;
-}
-
-message UpdatePasswordRequest {
-  string token = 1; // authentication
-  string old_password = 2;
-  string new_password = 3;
-}
-
-message UpdatePasswordResponse {
   bool success = 1;
   string message = 2;
 }
@@ -154,7 +132,10 @@ message ListProfilesRequest {
 }
 
 message ProfileResponse {
-  UserProfile profile = 1;
+  oneof result {
+    UserProfile profile = 1;
+    google.rpc.Status error = 2;
+  }
 }
 
 message ListProfilesResponse {
