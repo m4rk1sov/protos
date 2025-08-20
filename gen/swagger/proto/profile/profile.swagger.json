@@ -2,8 +2,8 @@
   "swagger": "2.0",
   "info": {
     "title": "Profile Service API",
-    "description": "Handles user profile: creation, retrieving, updating, deleting and listing profiles",
-    "version": "1.0"
+    "description": "Handles user profile: creation, retrieving, updating, deleting and listing profiles; Validation included",
+    "version": "1.1"
   },
   "tags": [
     {
@@ -62,7 +62,6 @@
           },
           {
             "name": "sortOrder",
-            "description": "ASC OR DESC",
             "in": "query",
             "required": false,
             "type": "string"
@@ -320,9 +319,6 @@
       "properties": {
         "profile": {
           "$ref": "#/definitions/profileUserProfile"
-        },
-        "error": {
-          "$ref": "#/definitions/rpcStatus"
         }
       }
     },
@@ -347,6 +343,14 @@
         },
         "email": {
           "type": "string"
+        },
+        "createdAt": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "updatedAt": {
+          "type": "string",
+          "format": "date-time"
         }
       }
     },
@@ -367,11 +371,11 @@
         "code": {
           "type": "integer",
           "format": "int32",
-          "description": "The status code, which should be an enum value of\n[google.rpc.Code][google.rpc.Code]."
+          "description": "The status code, which should be an enum value of [google.rpc.Code][google.rpc.Code]."
         },
         "message": {
           "type": "string",
-          "description": "A developer-facing error message, which should be in English. Any\nuser-facing error message should be localized and sent in the\n[google.rpc.Status.details][google.rpc.Status.details] field, or localized\nby the client."
+          "description": "A developer-facing error message, which should be in English. Any\r\nuser-facing error message should be localized and sent in the\r\n[google.rpc.Status.details][google.rpc.Status.details] field, or localized by the client."
         },
         "details": {
           "type": "array",
@@ -379,10 +383,10 @@
             "type": "object",
             "$ref": "#/definitions/protobufAny"
           },
-          "description": "A list of messages that carry the error details.  There is a common set of\nmessage types for APIs to use."
+          "description": "A list of messages that carry the error details.  There is a common set of\r\nmessage types for APIs to use."
         }
       },
-      "description": "The `Status` type defines a logical error model that is suitable for\ndifferent programming environments, including REST APIs and RPC APIs. It is\nused by [gRPC](https://github.com/grpc). Each `Status` message contains\nthree pieces of data: error code, error message, and error details.\n\nYou can find out more about this error model and how to work with it in the\n[API Design Guide](https://cloud.google.com/apis/design/errors)."
+      "description": "The `Status` type defines a logical error model that is suitable for different\r\nprogramming environments, including REST APIs and RPC APIs. It is used by\r\n[gRPC](https://github.com/grpc). The error model is designed to be:\r\n\r\n- Simple to use and understand for most users\r\n- Flexible enough to meet unexpected needs\r\n\r\n# Overview\r\n\r\nThe `Status` message contains three pieces of data: error code, error message,\r\nand error details. The error code should be an enum value of\r\n[google.rpc.Code][google.rpc.Code], but it may accept additional error codes if needed.  The\r\nerror message should be a developer-facing English message that helps\r\ndevelopers *understand* and *resolve* the error. If a localized user-facing\r\nerror message is needed, put the localized message in the error details or\r\nlocalize it in the client. The optional error details may contain arbitrary\r\ninformation about the error. There is a predefined set of error detail types\r\nin the package `google.rpc` that can be used for common error conditions.\r\n\r\n# Language mapping\r\n\r\nThe `Status` message is the logical representation of the error model, but it\r\nis not necessarily the actual wire format. When the `Status` message is\r\nexposed in different client libraries and different wire protocols, it can be\r\nmapped differently. For example, it will likely be mapped to some exceptions\r\nin Java, but more likely mapped to some error codes in C.\r\n\r\n# Other uses\r\n\r\nThe error model and the `Status` message can be used in a variety of\r\nenvironments, either with or without APIs, to provide a\r\nconsistent developer experience across different environments.\r\n\r\nExample uses of this error model include:\r\n\r\n- Partial errors. If a service needs to return partial errors to the client,\r\n    it may embed the `Status` in the normal response to indicate the partial\r\n    errors.\r\n\r\n- Workflow errors. A typical workflow has multiple steps. Each step may\r\n    have a `Status` message for error reporting.\r\n\r\n- Batch operations. If a client uses batch request and batch response, the\r\n    `Status` message should be used directly inside batch response, one for\r\n    each error sub-response.\r\n\r\n- Asynchronous operations. If an API call embeds asynchronous operation\r\n    results in its response, the status of those operations should be\r\n    represented directly using the `Status` message.\r\n\r\n- Logging. If some API errors are stored in logs, the message `Status` could\r\n    be used directly after any stripping needed for security/privacy reasons."
     }
   }
 }
