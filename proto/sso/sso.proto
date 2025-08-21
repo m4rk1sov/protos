@@ -7,18 +7,19 @@ import "google/api/annotations.proto";
 import "protoc-gen-openapiv2/options/annotations.proto";
 
 option go_package = "m4rk1sov.sso.v1;ssov1";
+//option go_package = "github.com/m4rk1sov/protos/gen/go/sso";
 option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_swagger) = {
   info: {
     title: "SSO Service API";
     version: "1.1";
     description: "Handles login, register, tokens, permissions; Validation included";
   };
-  schemes: HTTP;
+  schemes: [HTTP, HTTPS];
   consumes: "application/json";
   produces: "application/json";
 };
 
-service Auth {
+service AuthService {
   rpc Register (RegisterRequest) returns (RegisterResponse) {
     option (google.api.http) = {
       post: "/v1/auth/register"
@@ -121,7 +122,7 @@ service Auth {
   }
 }
 
-service Permission {
+service PermissionService {
   rpc GetUserPermissions(GetUserPermissionsRequest) returns (GetUserPermissionsResponse) {
     option (google.api.http) = {
       get: "/v1/permissions/{user_id}"
@@ -150,14 +151,7 @@ message RegisterRequest {
   string address = 3 [(buf.validate.field).string = {min_len: 1, max_len: 100}];
 
   string email = 4 [(buf.validate.field).string.email = true];
-  string password = 5 [
-    (buf.validate.field).string = { min_len: 8, max_len: 72}
-//    (buf.validate.field).cel = {
-//      id: "pass.complexity",
-//      message: "min length is 8, required upper, lower and digits",
-//      expression: "this.matches('^(?=.*[A-Z])(?=.*[a-z])(?=.*\\d)\\S{8,72}$')"
-//    }
-  ];
+  string password = 5 [(buf.validate.field).string = { min_len: 8, max_len: 72}];
 }
 
 message RegisterResponse {

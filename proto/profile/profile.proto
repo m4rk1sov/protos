@@ -3,12 +3,12 @@ syntax = "proto3";
 package profile;
 
 import "buf/validate/validate.proto";
-import "google/rpc/status.proto";
 import "google/api/annotations.proto";
 import "protoc-gen-openapiv2/options/annotations.proto";
 import "google/protobuf/timestamp.proto";
 
 option go_package = "m4rk1sov.profile.v1;profilev1";
+//option go_package = "github.com/m4rk1sov/protos/gen/go/profile";
 option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_swagger) = {
   info: {
     title: "Profile Service API";
