@@ -4,12 +4,12 @@
 // 	protoc        (unknown)
 // source: profile/profile.proto
 
-package profile
+package profilev1
 
 import (
 	_ "buf.build/gen/go/bufbuild/protovalidate/protocolbuffers/go/buf/validate"
-	_ "github.com/m4rk1sov/protos/gen/go/google/api"
-	_ "github.com/m4rk1sov/protos/gen/go/protoc-gen-openapiv2/options"
+	_ "github.com/grpc-ecosystem/grpc-gateway/v2/protoc-gen-openapiv2/options"
+	_ "google.golang.org/genproto/googleapis/api/annotations"
 	protoreflect "google.golang.org/protobuf/reflect/protoreflect"
 	protoimpl "google.golang.org/protobuf/runtime/protoimpl"
 	timestamppb "google.golang.org/protobuf/types/known/timestamppb"
@@ -714,9 +714,9 @@ const file_profile_profile_proto_rawDesc = "" +
 	"\rDeleteProfile\x12\x1d.profile.DeleteProfileRequest\x1a\x1e.profile.DeleteProfileResponse\"j\x92AN\n" +
 	"\aProfile\x12\x13Delete user profile\x1a.Delete user profile by UUID profile id string \x82\xd3\xe4\x93\x02\x13*\x11/v1/profiles/{id}\x12\xb3\x01\n" +
 	"\fListProfiles\x12\x1c.profile.ListProfilesRequest\x1a\x1d.profile.ListProfilesResponse\"f\x92AO\n" +
-	"\aProfile\x12\x1aList profiles (for admins)\x1a(List profiles by limiting and pagination\x82\xd3\xe4\x93\x02\x0e\x12\f/v1/profilesB\xb4\x02\x92A\xae\x01\x12\x84\x01\n" +
+	"\aProfile\x12\x1aList profiles (for admins)\x1a(List profiles by limiting and pagination\x82\xd3\xe4\x93\x02\x0e\x12\f/v1/profilesB\xa8\x02\x92A\xae\x01\x12\x84\x01\n" +
 	"\x13Profile Service API\x12hHandles user profile: creation, retrieving, updating, deleting and listing profiles; Validation included2\x031.1*\x01\x012\x10application/json:\x10application/json\n" +
-	"\vcom.profileB\fProfileProtoP\x01Z)github.com/m4rk1sov/protos/gen/go/profile\xa2\x02\x03PXX\xaa\x02\aProfile\xca\x02\aProfile\xe2\x02\x13Profile\\GPBMetadata\xea\x02\aProfileb\x06proto3"
+	"\vcom.profileB\fProfileProtoP\x01Z\x1dm4rk1sov.profile.v1;profilev1\xa2\x02\x03PXX\xaa\x02\aProfile\xca\x02\aProfile\xe2\x02\x13Profile\\GPBMetadata\xea\x02\aProfileb\x06proto3"
 
 var (
 	file_profile_profile_proto_rawDescOnce sync.Once

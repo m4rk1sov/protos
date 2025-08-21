@@ -2,11 +2,11 @@
 // source: sso/sso.proto
 
 /*
-Package sso is a reverse proxy.
+Package ssov1 is a reverse proxy.
 
 It translates gRPC into RESTful JSON APIs.
 */
-package sso
+package ssov1
 
 import (
 	"context"

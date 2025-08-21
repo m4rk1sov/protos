@@ -4,7 +4,7 @@
 // - protoc             (unknown)
 // source: profile/profile.proto
 
-package profile
+package profilev1
 
 import (
 	context "context"

@@ -4,12 +4,12 @@
 // 	protoc        (unknown)
 // source: sso/sso.proto
 
-package sso
+package ssov1
 
 import (
 	_ "buf.build/gen/go/bufbuild/protovalidate/protocolbuffers/go/buf/validate"
-	_ "github.com/m4rk1sov/protos/gen/go/google/api"
-	_ "github.com/m4rk1sov/protos/gen/go/protoc-gen-openapiv2/options"
+	_ "github.com/grpc-ecosystem/grpc-gateway/v2/protoc-gen-openapiv2/options"
+	_ "google.golang.org/genproto/googleapis/api/annotations"
 	protoreflect "google.golang.org/protobuf/reflect/protoreflect"
 	protoimpl "google.golang.org/protobuf/runtime/protoimpl"
 	reflect "reflect"
@@ -1330,9 +1330,9 @@ const file_sso_sso_proto_rawDesc = "" +
 	"Permission\x12\x14Get user permissions\x1a2Get user permissions by the user_id, returns array\x82\xd3\xe4\x93\x02\x1b\x12\x19/v1/permissions/{user_id}\x12\x8a\x02\n" +
 	"\x11HasUserPermission\x12\x1e.auth.HasUserPermissionRequest\x1a\x1f.auth.HasUserPermissionResponse\"\xb3\x01\x92A\x81\x01\n" +
 	"\n" +
-	"Permission\x12\x19Check for user permission\x1aXCheck for whether user has permission or not by the user_id and permission, returns bool\x82\xd3\xe4\x93\x02(\x12&/v1/permissions/{user_id}/{permission}B\xf2\x01\x92A\x83\x01\x12Y\n" +
+	"Permission\x12\x19Check for user permission\x1aXCheck for whether user has permission or not by the user_id and permission, returns bool\x82\xd3\xe4\x93\x02(\x12&/v1/permissions/{user_id}/{permission}B\xe2\x01\x92A\x83\x01\x12Y\n" +
 	"\x0fSSO Service API\x12AHandles login, register, tokens, permissions; Validation included2\x031.1*\x02\x01\x022\x10application/json:\x10application/json\n" +
-	"\bcom.authB\bSsoProtoP\x01Z%github.com/m4rk1sov/protos/gen/go/sso\xa2\x02\x03AXX\xaa\x02\x04Auth\xca\x02\x04Auth\xe2\x02\x10Auth\\GPBMetadata\xea\x02\x04Authb\x06proto3"
+	"\bcom.authB\bSsoProtoP\x01Z\x15m4rk1sov.sso.v1;ssov1\xa2\x02\x03AXX\xaa\x02\x04Auth\xca\x02\x04Auth\xe2\x02\x10Auth\\GPBMetadata\xea\x02\x04Authb\x06proto3"
 
 var (
 	file_sso_sso_proto_rawDescOnce sync.Once
