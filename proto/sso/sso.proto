@@ -2,22 +2,24 @@ syntax = "proto3";
 
 package auth;
 
+import "buf/validate/validate.proto";
 import "google/api/annotations.proto";
 import "protoc-gen-openapiv2/options/annotations.proto";
 
 option go_package = "m4rk1sov.sso.v1;ssov1";
+//option go_package = "github.com/m4rk1sov/protos/gen/go/sso";
 option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_swagger) = {
   info: {
     title: "SSO Service API";
-    version: "1.0";
-    description: "Handles login, register, tokens, permissions";
+    version: "1.1";
+    description: "Handles login, register, tokens, permissions; Validation included";
   };
-  schemes: HTTP;
+  schemes: [HTTP, HTTPS];
   consumes: "application/json";
   produces: "application/json";
 };
 
-service Auth {
+service AuthService {
   rpc Register (RegisterRequest) returns (RegisterResponse) {
     option (google.api.http) = {
       post: "/v1/auth/register"
@@ -120,7 +122,7 @@ service Auth {
   }
 }
 
-service Permission {
+service PermissionService {
   rpc GetUserPermissions(GetUserPermissionsRequest) returns (GetUserPermissionsResponse) {
     option (google.api.http) = {
       get: "/v1/permissions/{user_id}"
@@ -144,12 +146,12 @@ service Permission {
 }
 
 message RegisterRequest {
-  string name = 1;
-  string phone = 2;
-  string address = 3;
+  string name = 1 [(buf.validate.field).string = {min_len: 1, max_len: 100}];
+  string phone = 2 [(buf.validate.field).string.pattern = "^\\+[1-9]\\d{1,14}$"];
+  string address = 3 [(buf.validate.field).string = {min_len: 1, max_len: 100}];
 
-  string email = 4;
-  string password = 5;
+  string email = 4 [(buf.validate.field).string.email = true];
+  string password = 5 [(buf.validate.field).string = { min_len: 8, max_len: 72}];
 }
 
 message RegisterResponse {
@@ -160,9 +162,9 @@ message RegisterResponse {
 }
 
 message LoginRequest {
-  string email = 1;
-  string password = 2;
-  int32 app_id = 3;
+  string email = 1 [(buf.validate.field).string.email = true];
+  string password = 2 [(buf.validate.field).string.min_len = 8];
+  int32 app_id = 3 [(buf.validate.field).int32.gte = 1];
 }
 
 message LoginResponse {
@@ -172,7 +174,7 @@ message LoginResponse {
 }
 
 message LogoutRequest {
-  string refresh_token = 1;
+  string refresh_token = 1 [(buf.validate.field).string.min_len = 1];
 }
 
 message LogoutResponse {
@@ -180,7 +182,7 @@ message LogoutResponse {
 }
 
 message GetUserInfoRequest {
-  string access_token = 1;
+  string access_token = 1 [(buf.validate.field).string.min_len = 1];
 }
 
 message GetUserInfoResponse {
@@ -193,7 +195,7 @@ message GetUserInfoResponse {
 }
 
 message RefreshTokenRequest {
-  string refresh_token = 1;
+  string refresh_token = 1 [(buf.validate.field).string.min_len = 1];
 }
 
 message RefreshTokenResponse {
@@ -203,8 +205,8 @@ message RefreshTokenResponse {
 }
 
 message ForgotPasswordRequest {
-  string email = 1;
-  int32 app_id = 2;
+  string email = 1 [(buf.validate.field).string.email = true];
+  int32 app_id = 2 [(buf.validate.field).int32.gte = 1];
 }
 
 message ForgotPasswordResponse {
@@ -214,8 +216,8 @@ message ForgotPasswordResponse {
 }
 
 message ResetPasswordRequest {
-  string token = 1;
-  string new_password = 2;
+  string token = 1 [(buf.validate.field).string.min_len = 1];
+  string new_password = 2 [(buf.validate.field).string = { min_len: 8, max_len: 72}];
 }
 
 message ResetPasswordResponse {
@@ -224,8 +226,8 @@ message ResetPasswordResponse {
 }
 
 message SendEmailVerificationRequest {
-  int64 user_id = 1;
-  int32 app_id = 2;
+  int64 user_id = 1 [(buf.validate.field).int64.gte = 1];
+  int32 app_id = 2 [(buf.validate.field).int32.gte = 1];
 }
 
 message SendEmailVerificationResponse {
@@ -236,7 +238,7 @@ message SendEmailVerificationResponse {
 
 
 message EmailVerifyRequest {
-  string token = 1;
+  string token = 1 [(buf.validate.field).string.min_len = 1];
 }
 
 message EmailVerifyResponse {
@@ -246,7 +248,7 @@ message EmailVerifyResponse {
 }
 
 message GetUserPermissionsRequest {
-  int64 user_id = 1;
+  int64 user_id = 1 [(buf.validate.field).int64.gte = 1];
 }
 
 message GetUserPermissionsResponse {
@@ -254,8 +256,8 @@ message GetUserPermissionsResponse {
 }
 
 message HasUserPermissionRequest {
-  int64 user_id = 1;
-  string permission = 2;
+  int64 user_id = 1 [(buf.validate.field).int64.gte = 1];
+  string permission = 2 [(buf.validate.field).string = {min_len: 1, max_len: 100}];
 }
 
 message HasUserPermissionResponse {

@@ -2,16 +2,18 @@ syntax = "proto3";
 
 package profile;
 
-import "google/rpc/status.proto";
+import "buf/validate/validate.proto";
 import "google/api/annotations.proto";
 import "protoc-gen-openapiv2/options/annotations.proto";
+import "google/protobuf/timestamp.proto";
 
 option go_package = "m4rk1sov.profile.v1;profilev1";
+//option go_package = "github.com/m4rk1sov/protos/gen/go/profile";
 option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_swagger) = {
   info: {
     title: "Profile Service API";
-    version: "1.0";
-    description: "Handles user profile: creation, retrieving, updating, deleting and listing profiles";
+    version: "1.1";
+    description: "Handles user profile: creation, retrieving, updating, deleting and listing profiles; Validation included";
   };
   schemes: HTTP;
   consumes: "application/json";
@@ -90,33 +92,35 @@ message UserProfile {
   string phone = 4;
   string address = 5;
   string email = 6;
+  google.protobuf.Timestamp created_at = 7;
+  google.protobuf.Timestamp updated_at = 8;
 }
 
 message CreateProfileRequest {
-  int64 user_id = 1;
-  string name = 2;
-  string phone = 3;
-  string address = 4;
-  string email = 5;
+  int64 user_id = 1 [(buf.validate.field).int64.gte = 1];
+  string name = 2 [(buf.validate.field).string = {min_len: 1, max_len: 100}];
+  string phone = 3 [(buf.validate.field).string.pattern = "^\\+[1-9]\\d{1,14}$"];
+  string address = 4 [(buf.validate.field).string = {min_len: 1, max_len: 100}];
+  string email = 5 [(buf.validate.field).string.email = true];
 }
 
 message GetProfileRequest {
-  string id = 1;
+  string id = 1 [(buf.validate.field).string.uuid = true];
 }
 
 message GetProfileByUserIDRequest {
-  int64 user_id = 1;
+  int64 user_id = 1 [(buf.validate.field).int64.gte = 1];
 }
 
 message UpdateProfileRequest {
-  string id = 1;
-  optional string name = 2;
-  optional string phone = 3;
-  optional string address = 4;
+  string id = 1 [(buf.validate.field).string.uuid = true];
+  optional string name = 2 [(buf.validate.field).string = {min_len: 1, max_len: 100}];
+  optional string phone = 3 [(buf.validate.field).string.pattern = "^\\+[1-9]\\d{1,14}$"];
+  optional string address = 4 [(buf.validate.field).string = {min_len: 1, max_len: 100}];
 }
 
 message DeleteProfileRequest {
-  string id = 1;
+  string id = 1 [(buf.validate.field).string.uuid = true];
 }
 
 message DeleteProfileResponse {
@@ -125,17 +129,14 @@ message DeleteProfileResponse {
 }
 
 message ListProfilesRequest {
-  int64 page = 1;
-  int64 limit = 2;
-  string sort_by = 3;
-  string sort_order = 4; // ASC OR DESC
+  int64 page = 1 [(buf.validate.field).int64 = {gte: 1, lte: 1000000}];
+  optional int64 limit = 2 [(buf.validate.field).int64 = {gte: 1, lte: 100}];
+  optional string sort_by = 3 [(buf.validate.field).string = {in: ["user_id", "name", "email", "address"]}];
+  optional string sort_order = 4 [(buf.validate.field).string = {in: ["ASC", "DESC"]}];
 }
 
 message ProfileResponse {
-  oneof result {
-    UserProfile profile = 1;
-    google.rpc.Status error = 2;
-  }
+  UserProfile profile = 1;
 }
 
 message ListProfilesResponse {
