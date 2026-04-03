@@ -1,0 +1,148 @@
+syntax = "proto3";
+
+package profile.v1;
+
+import "buf/validate/validate.proto";
+import "google/api/annotations.proto";
+import "protoc-gen-openapiv2/options/annotations.proto";
+import "google/protobuf/timestamp.proto";
+
+//option go_package = "m4rk1sov.profile.v1;profilev1";
+option go_package = "github.com/m4rk1sov/protos/gen/go/profile/v1;profilev1";
+option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_swagger) = {
+  info: {
+    title: "Profile Service API";
+    version: "1.1";
+    description: "Handles user profile: creation, retrieving, updating, deleting and listing profiles; Validation included";
+  };
+  schemes: HTTP;
+  consumes: "application/json";
+  produces: "application/json";
+};
+
+service ProfileService {
+  rpc CreateProfile (CreateProfileRequest) returns (ProfileResponse) {
+    option (google.api.http) = {
+      post: "/v1/profiles"
+      body: "*"
+    };
+    option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+      tags: ["Profile"];
+      summary: "Create user profile"
+      description: "Creates user profile by the data input automatically"
+    };
+  }
+  rpc GetProfile (GetProfileRequest) returns (ProfileResponse) {
+    option (google.api.http) = {
+      get: "/v1/profiles/{id}"
+    };
+    option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+      tags: ["Profile"];
+      summary: "Get user profile by id (profile)"
+      description: "Get user profile by profile id (string UUID) (important to not mix with user_id from auth)"
+    };
+  }
+  rpc GetProfileByUserID (GetProfileByUserIDRequest) returns (ProfileResponse) {
+    option (google.api.http) = {
+      get: "/v1/profiles/by-user/{user_id}"
+    };
+    option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+      tags: ["Profile", "Auth"];
+      summary: "Get user profile by user_id (auth)"
+      description: "Get user profile by user_id from auth service (int64)"
+    };
+  }
+  rpc UpdateProfile (UpdateProfileRequest) returns (ProfileResponse) {
+    option (google.api.http) = {
+      patch: "/v1/profiles/{id}"
+      body: "*"
+    };
+    option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+      tags: ["Profile", "Auth"];
+      summary: "Update user profile PATCH"
+      description: "Update user profile partially or fully depending on request"
+    };
+  }
+  rpc DeleteProfile (DeleteProfileRequest) returns (DeleteProfileResponse) {
+    option (google.api.http) = {
+      delete: "/v1/profiles/{id}"
+    };
+    option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+      tags: ["Profile"];
+      summary: "Delete user profile"
+      description: "Delete user profile by UUID profile id string "
+    };
+  }
+  rpc ListProfiles (ListProfilesRequest) returns (ListProfilesResponse) {
+    option (google.api.http) = {
+      get: "/v1/profiles"
+    };
+    option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+      tags: ["Profile"];
+      summary: "List profiles (for admins)"
+      description: "List profiles by limiting and pagination"
+    };
+  }
+}
+
+message UserProfile {
+  string id = 1;
+  int64 user_id = 2;
+  string name = 3;
+  string phone = 4;
+  string address = 5;
+  string email = 6;
+  google.protobuf.Timestamp created_at = 7;
+  google.protobuf.Timestamp updated_at = 8;
+}
+
+message CreateProfileRequest {
+  int64 user_id = 1 [(buf.validate.field).int64.gte = 1];
+  string name = 2 [(buf.validate.field).string = {min_len: 1, max_len: 100}];
+  string phone = 3 [(buf.validate.field).string.pattern = "^\\+[1-9]\\d{1,14}$"];
+  string address = 4 [(buf.validate.field).string = {min_len: 1, max_len: 100}];
+  string email = 5 [(buf.validate.field).string.email = true];
+}
+
+message GetProfileRequest {
+  string id = 1 [(buf.validate.field).string.uuid = true];
+}
+
+message GetProfileByUserIDRequest {
+  int64 user_id = 1 [(buf.validate.field).int64.gte = 1];
+}
+
+message UpdateProfileRequest {
+  string id = 1 [(buf.validate.field).string.uuid = true];
+  optional string name = 2 [(buf.validate.field).string = {min_len: 1, max_len: 100}];
+  optional string phone = 3 [(buf.validate.field).string.pattern = "^\\+[1-9]\\d{1,14}$"];
+  optional string address = 4 [(buf.validate.field).string = {min_len: 1, max_len: 100}];
+}
+
+message DeleteProfileRequest {
+  string id = 1 [(buf.validate.field).string.uuid = true];
+}
+
+message DeleteProfileResponse {
+  bool success = 1;
+  string message = 2;
+}
+
+message ListProfilesRequest {
+  int64 page = 1 [(buf.validate.field).int64 = {gte: 1, lte: 1000000}];
+  optional int64 limit = 2 [(buf.validate.field).int64 = {gte: 1, lte: 100}];
+  optional string sort_by = 3 [(buf.validate.field).string = {in: ["user_id", "name", "email", "address"]}];
+  optional string sort_order = 4 [(buf.validate.field).string = {in: ["ASC", "DESC"]}];
+}
+
+message ProfileResponse {
+  UserProfile profile = 1;
+}
+
+message ListProfilesResponse {
+  repeated UserProfile profiles = 1;
+  int64 total = 2;
+  int64 page = 3;
+  int64 limit = 4;
+  bool has_next = 5;
+}

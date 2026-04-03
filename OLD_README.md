@@ -1,24 +1,24 @@
 # PROTOS
-contracts for microservices, updated for buf
+contracts for microservices
 ## GRPC and Protobuffer package dependencies
 ### Protobuf installation
 Linux, using apt or apt-get, for example:
-```bash
+```
 apt install -y protobuf-compiler
 protoc --version  # Ensure compiler version is 3+
 ```
 MacOS, using Homebrew:
-```bash
+``` 
 brew install protobuf
 protoc --version  # Ensure compiler version is 3+
 ```
 Windows, using Winget
-```shell
+```
 winget install protobuf
 protoc --version # Ensure compiler version is 3+
 ```
 ### Go plugins for the protocol compiler:
-```bash
+```
 go get -u google.golang.org/protobuf/cmd/protoc-gen-go
 go install google.golang.org/protobuf/cmd/protoc-gen-go
 
@@ -26,36 +26,18 @@ go get -u google.golang.org/grpc/cmd/protoc-gen-go-grpc
 go install google.golang.org/grpc/cmd/protoc-gen-go-grpc
 ```
 NOTE: You should add the `protoc-gen-go-grpc` to your PATH
-```bash
+```
 PATH="${PATH}:${HOME}/go/bin"
 ```
 ### Installing the grpc-gateway and swagger
-```bash
+```
 go install google.golang.org/protobuf/cmd/protoc-gen-go@latest
 go install google.golang.org/grpc/cmd/protoc-gen-go-grpc@latest
 go install github.com/grpc-ecosystem/grpc-gateway/v2/protoc-gen-grpc-gateway@latest
 go install github.com/grpc-ecosystem/grpc-gateway/v2/protoc-gen-openapiv2@latest
 ```
-
-### Installing the buf tool
-For Linux / MacOS:
-```bash
-brew install bufbuild/buf/buf
+### Running the service (generating the contracts)
+Requires the Taskfile, instructions can be found here: https://taskfile.dev/installation/
 ```
-For Windows:
-```shell
-winget install bufbuild.buf
-```
-
-Verification:
-```bash
-buf --version
-```
-
-### Running the service (generating the contracts, linter and others)
-Requires the Taskfile, instructions for installing can be found here: https://taskfile.dev/installation/
-
-The full list of commands can be found in the Taskfile.yaml
-```bash
 task generate
 ```

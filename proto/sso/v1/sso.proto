@@ -1,0 +1,265 @@
+syntax = "proto3";
+
+package sso.v1;
+
+import "buf/validate/validate.proto";
+import "google/api/annotations.proto";
+import "protoc-gen-openapiv2/options/annotations.proto";
+
+//option go_package = "m4rk1sov.sso.v1;ssov1";
+option go_package = "github.com/m4rk1sov/protos/gen/go/sso/v1;ssov1";
+option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_swagger) = {
+  info: {
+    title: "SSO Service API";
+    version: "1.1";
+    description: "Handles login, register, tokens, permissions; Validation included";
+  };
+  schemes: [HTTP, HTTPS];
+  consumes: "application/json";
+  produces: "application/json";
+};
+
+service AuthService {
+  rpc Register (RegisterRequest) returns (RegisterResponse) {
+    option (google.api.http) = {
+      post: "/v1/auth/register"
+      body: "*"
+    };
+    option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+      tags: ["Auth"];
+      summary: "Register user"
+      description: "Register user based on general information (name, phone, address, email and password), returns user_id, name and email"
+    };
+  }
+  rpc Login (LoginRequest) returns (LoginResponse) {
+    option (google.api.http) = {
+      post: "/v1/auth/login"
+      body: "*"
+    };
+    option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+      tags: ["Auth"];
+      summary: "Login user"
+      description: "Login user, by email and password, provide the app_id for for permission check further, returns access and refresh tokens with expire time"
+    };
+  }
+  rpc Logout (LogoutRequest) returns (LogoutResponse) {
+    option (google.api.http) = {
+      post: "/v1/auth/logout"
+      body: "*"
+    };
+    option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+      tags: ["Auth"];
+      summary: "Logout user"
+      description: "Logout user by refresh token, deletes the token in DB"
+    };
+  }
+  rpc GetUserInfo (GetUserInfoRequest) returns (GetUserInfoResponse) {
+    option (google.api.http) = {
+      post: "/v1/auth/user"
+      body: "*"
+    };
+    option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+      tags: ["Auth"];
+      summary: "Get user info"
+      description: "Get user info: user_id, name, phone, email, address. Based on the access token"
+    };
+  }
+  rpc RefreshToken (RefreshTokenRequest) returns (RefreshTokenResponse) {
+    option (google.api.http) = {
+      post: "/v1/auth/refresh"
+      body: "*"
+    };
+    option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+      tags: ["Auth"];
+      summary: "Refresh the tokens"
+      description: "Return new access and refresh tokens with expire time by the refresh token"
+    };
+  }
+
+  rpc ForgotPassword (ForgotPasswordRequest) returns (ForgotPasswordResponse) {
+    option (google.api.http) = {
+      post: "/v1/auth/forgot-password"
+      body: "*"
+    };
+    option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+      tags: ["Auth"];
+      summary: "Forgot password request"
+      description: "By providing the email and app_id will return token for resetting password"
+    };
+  }
+  rpc ResetPassword (ResetPasswordRequest) returns (ResetPasswordResponse) {
+    option (google.api.http) = {
+      post: "/v1/auth/reset-password"
+      body: "*"
+    };
+    option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+      tags: ["Auth"];
+      summary: "Reset password"
+      description: "By the token received when forgot password was requested, will refresh password"
+    };
+  }
+
+  rpc SendEmailVerification (SendEmailVerificationRequest) returns (SendEmailVerificationResponse) {
+    option (google.api.http) = {
+      post: "/v1/auth/verification/send"
+      body: "*"
+    };
+    option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+      tags: ["Auth"];
+      summary: "Email verification will be send"
+      description: "Email verification request sent after the registration, contains token"
+    };
+  }
+  rpc EmailVerify (EmailVerifyRequest) returns (EmailVerifyResponse) {
+    option (google.api.http) = {
+      get: "/v1/auth/verification/confirm/{token}"
+    };
+    option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+      tags: ["Auth"];
+      summary: "Email verification confirmation"
+      description: "Email will be verified after the token is confirmed"
+    };
+  }
+}
+
+service PermissionService {
+  rpc GetUserPermissions(GetUserPermissionsRequest) returns (GetUserPermissionsResponse) {
+    option (google.api.http) = {
+      get: "/v1/permissions/{user_id}"
+    };
+    option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+      tags: ["Permission"];
+      summary: "Get user permissions"
+      description: "Get user permissions by the user_id, returns array"
+    };
+  }
+  rpc HasUserPermission(HasUserPermissionRequest) returns (HasUserPermissionResponse) {
+    option (google.api.http) = {
+      get: "/v1/permissions/{user_id}/{permission}"
+    };
+    option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+      tags: ["Permission"];
+      summary: "Check for user permission"
+      description: "Check for whether user has permission or not by the user_id and permission, returns bool"
+    };
+  }
+}
+
+message RegisterRequest {
+  string name = 1 [(buf.validate.field).string = {min_len: 1, max_len: 100}];
+  string phone = 2 [(buf.validate.field).string.pattern = "^\\+[1-9]\\d{1,14}$"];
+  string address = 3 [(buf.validate.field).string = {min_len: 1, max_len: 100}];
+
+  string email = 4 [(buf.validate.field).string.email = true];
+  string password = 5 [(buf.validate.field).string = { min_len: 8, max_len: 72}];
+}
+
+message RegisterResponse {
+  int64 user_id = 1;
+  string name = 2;
+  string email = 3;
+  bool activated = 4;
+}
+
+message LoginRequest {
+  string email = 1 [(buf.validate.field).string.email = true];
+  string password = 2 [(buf.validate.field).string.min_len = 8];
+  int32 app_id = 3 [(buf.validate.field).int32.gte = 1];
+}
+
+message LoginResponse {
+  string access_token = 1;
+  string refresh_token = 2;
+  int64 expires_at_unix = 3;
+}
+
+message LogoutRequest {
+  string refresh_token = 1 [(buf.validate.field).string.min_len = 1];
+}
+
+message LogoutResponse {
+  bool success = 1;
+}
+
+message GetUserInfoRequest {
+  string access_token = 1 [(buf.validate.field).string.min_len = 1];
+}
+
+message GetUserInfoResponse {
+  int64 user_id = 1;
+  string email = 2;
+  string name = 3;
+  string phone = 4;
+  string address = 5;
+  bool activated = 6;
+}
+
+message RefreshTokenRequest {
+  string refresh_token = 1 [(buf.validate.field).string.min_len = 1];
+}
+
+message RefreshTokenResponse {
+  string access_token = 1;
+  string refresh_token = 2;
+  int64 expires_at_unix = 3;
+}
+
+message ForgotPasswordRequest {
+  string email = 1 [(buf.validate.field).string.email = true];
+  int32 app_id = 2 [(buf.validate.field).int32.gte = 1];
+}
+
+message ForgotPasswordResponse {
+  bool success = 1;
+  string message = 2;
+  int64 expires_at_unix = 3;
+}
+
+message ResetPasswordRequest {
+  string token = 1 [(buf.validate.field).string.min_len = 1];
+  string new_password = 2 [(buf.validate.field).string = { min_len: 8, max_len: 72}];
+}
+
+message ResetPasswordResponse {
+  bool success = 1;
+  string message = 2;
+}
+
+message SendEmailVerificationRequest {
+  int64 user_id = 1 [(buf.validate.field).int64.gte = 1];
+  int32 app_id = 2 [(buf.validate.field).int32.gte = 1];
+}
+
+message SendEmailVerificationResponse {
+  bool success = 1;
+  string message = 2;
+  int64 expires_at_unix = 3;
+}
+
+
+message EmailVerifyRequest {
+  string token = 1 [(buf.validate.field).string.min_len = 1];
+}
+
+message EmailVerifyResponse {
+  bool success = 1;
+  string message = 2;
+  bool activated = 3;
+}
+
+message GetUserPermissionsRequest {
+  int64 user_id = 1 [(buf.validate.field).int64.gte = 1];
+}
+
+message GetUserPermissionsResponse {
+  repeated string permissions = 1; // ["user", etc]
+}
+
+message HasUserPermissionRequest {
+  int64 user_id = 1 [(buf.validate.field).int64.gte = 1];
+  string permission = 2 [(buf.validate.field).string = {min_len: 1, max_len: 100}];
+}
+
+message HasUserPermissionResponse {
+  bool allowed = 1;
+}
